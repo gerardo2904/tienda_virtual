@@ -19,7 +19,7 @@
     <section class="login-content">
       <div class="logo">
         <!-- <h1><?= $data['page_title']; ?></h1> -->
-        <img src="<?= media(); ?>/images/eye-chart-eye-examination.png" class="loguito"> 
+        <img src="<?= media(); ?>/images/eye-chart-eye-examination.png" class="loguito">  
       </div>
       <div class="login-box">
         <div id="divLoading">
