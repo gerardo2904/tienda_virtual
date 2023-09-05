@@ -75,7 +75,7 @@
 
                         <div class="form-group col-md-3">
                         <label for="listEstado">Estado</label>
-                            <select class="form-control" data-live-search="true" id="listEstado" name="listEstado" ></select>
+                            <select class="form-control" data-live-search="true" id="listEstado" name="listEstado" onchange="fntCambioCiudad();"></select>
                         </div>
 
                         <div class="form-group col-md-3">
