@@ -15896,7 +15896,7 @@ be a descendant of the grid when it is being dragged.
   background-color: #f6f9fa; /* 000509 aqui color original #009688 */ /*#1664c0 azul del encabezado */
   height: 50vh;
 }
- 
+  
 .m-loader {
   position: relative;
   width: 40px;
