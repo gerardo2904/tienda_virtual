@@ -244,6 +244,15 @@
             $nempresa = $request['nombre'];
             return $nempresa;
         }
+
+		public function selectProdExcel(){
+			$intEmpresa = intval($_SESSION['userData']['idempresa']);
+			
+            $sql = "SELECT codigo, CONCAT(marca,' ',nombre) as nombre, descripcion, precio 
+					from producto WHERE status !=0 AND idempresa= $intEmpresa and stock>0";
+			$request = $this->select_all($sql);
+			return $request;
+		}
 		
 	}
  ?>

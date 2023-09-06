@@ -1342,7 +1342,11 @@ function cambia2(a, b, c, d, e, iddet){
     fntActualizaDetalleVenta(parseInt(iddet),parseFloat(ptg));
   }
 
-  function fntObtieneRegimen(){
+  
+
+// Para filtros de estado, ciudad, CFDI...
+
+function fntObtieneRegimen(){
     if(document.querySelector('#listRegimen')){
         let ajaxUrl = base_url+'Clientes/getSelectRegimen';
         let requestRe = (window.XMLHttpRequest) ? 
@@ -1360,6 +1364,7 @@ function cambia2(a, b, c, d, e, iddet){
 }
 
 function fntObtieneCFDI(){
+    //alert("si");
     if(document.querySelector('#listCFDI')){
         let ajaxUrl = base_url+'Clientes/getSelectCFDI/'+document.querySelector('#listRegimen').value;
         let requestRe = (window.XMLHttpRequest) ? 
@@ -1369,12 +1374,62 @@ function fntObtieneCFDI(){
         requestRe.send();
         requestRe.onreadystatechange = function(){
             if(requestRe.readyState == 4 && requestRe.status == 200){
+                document.querySelector('#listCFDI').innerHTML = '';
+            $('#listCFDI').selectpicker('destroy');
+
                 document.querySelector('#listCFDI').innerHTML = requestRe.responseText;
-                $('#listCFDI').selectpicker('render');  
+                $('#listCFDI').selectpicker('get');
+                //$('#listCFDI').selectpicker('render');  
             }
         }
     }
 }
+
+
+
+function fntCambioCFDI(){   
+    let ajaxUrl = base_url+'Clientes/getSelectCFDI/'+document.querySelector('#listRegimen').value;
+    let requestRe = (window.XMLHttpRequest) ? 
+                new XMLHttpRequest() : 
+                new ActiveXObject('Microsoft.XMLHTTP');
+    requestRe.open("GET",ajaxUrl,true);
+    requestRe.send();
+    requestRe.onreadystatechange = function(){
+        if(requestRe.readyState == 4 && requestRe.status == 200){
+            
+            document.querySelector('#listCFDI').innerHTML = '';
+            $('#listCFDI').selectpicker('destroy');
+
+            document.querySelector('#listCFDI').innerHTML = requestRe.responseText;
+            $('#listCFDI').selectpicker('get');
+            $('#listCFDI').selectpicker('render');  
+            
+        }
+    }
+}
+
+function fntCambioCiudad(){   
+    let ajaxUrl = base_url+'Clientes/getSelectCiudad/'+document.querySelector('#listEstado').value;
+    let requestRe = (window.XMLHttpRequest) ? 
+                new XMLHttpRequest() : 
+                new ActiveXObject('Microsoft.XMLHTTP');
+    requestRe.open("GET",ajaxUrl,true);
+    requestRe.send();
+    requestRe.onreadystatechange = function(){
+        if(requestRe.readyState == 4 && requestRe.status == 200){
+            
+            document.querySelector('#listCiudad').innerHTML = '';
+            $('#listCiudad').selectpicker('destroy');
+
+            document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
+            $('#listCiudad').selectpicker('get');
+            $('#listCiudad').selectpicker('render');  
+            
+        }
+    }
+
+}
+
 
 function fntObtieneEstado(){
     if(document.querySelector('#listEstado')){
@@ -1403,7 +1458,11 @@ function fntObtieneCiudad(){
         requestRe.send();
         requestRe.onreadystatechange = function(){
             if(requestRe.readyState == 4 && requestRe.status == 200){
+                document.querySelector('#listCiudad').innerHTML = '';
+                $('#listCiudad').selectpicker('destroy');
+
                 document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
+                $('#listCiudad').selectpicker('get');
                 $('#listCiudad').selectpicker('render');  
             }
         }

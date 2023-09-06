@@ -19,7 +19,6 @@
             }
 
 			$data['nempresa'] = $this->model->empresa();
-			
             $data['page_tag'] = "Ventas";
             $data['page_title'] = " Ordenes de Salida - ". $data['nempresa'];
             $data['page_name'] = "ventas";
@@ -679,4 +678,5 @@
 */
 		
      }
+
 ?>

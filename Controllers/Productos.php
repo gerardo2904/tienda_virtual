@@ -287,6 +287,37 @@
 			die();
 		}
 
+		public function getExcel()
+		{
+			// codigo  -  marca+nombre  descripcion  -  precio
+			$salida  = "";
+			$salida .= "<table>";
+			$salida .= "<thead><th>Codigo</th><th>Nombre</th><th>Desctipcion</th><th>precio</th>";
+
+			
+			$arrData = $this->model->selectProdExcel();
+			for ($i=0; $i < count($arrData); $i++) {
+				$salida .= "<tr><td>".$arrData[$i]['codigo']."</td><td>".$arrData[$i]['nombre']."</td><td>".$arrData[$i]['descripcion']."</td><td>".SMONEY.' '.formatMoney($arrData[$i]['precio'])."</td></tr>";
+			}
+			$salida .= "</table>";
+
+			header("Content-type: application/vnd.ms-excel; charset=utf-8");
+			//header("Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8");
+			header("Content-Disposition: attachment; filename=prods.xls");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Cache-Control: private",false);
+
+			echo $salida;
+
+			//dep($salida);exit;
+
+			//echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+			
+			die();
+		}
+
+
 
 
      }

@@ -431,6 +431,7 @@
         }
 
 
+
 /*
 		public function insertImage(int $idproducto, string $imagen){
 			$this->intIdProducto = $idproducto;
