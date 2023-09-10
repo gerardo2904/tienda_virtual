@@ -459,7 +459,16 @@
 					
 					$pdf->SetFont('Arial','B',9);
 					$pdf->MultiCell(0,5,utf8_decode("Los precios estan expresados en moneda nacional de México (MXN)."),0,'C',false);
+					if(strlen($arrData['notas'])>0){
+						$notas=$arrData['notas'];
+						$reemplazar= array("<p>","</p>");
+						$nuevacad= array("","");
 
+						$notas=str_replace($reemplazar,$nuevacad,$arrData['notas']);
+
+						$pdf->Ln(8);
+						$pdf->MultiCell(0,5,utf8_decode("NOTA: \n".$notas),0,'C',false);
+					}
 					$pdf->Output();die();
 					//echo json_encode($pdf,JSON_UNESCAPED_UNICODE);
 
