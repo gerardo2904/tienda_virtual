@@ -73,6 +73,14 @@ tableProductos = $('#tableProductos').dataTable( {
             "exportOptions": { 
                 "columns": [ 0, 1, 2, 3, 4, 5] 
             }
+        },{
+            "extend": "excelHtml5",
+            "text": "<i class='fas fa-file-excel'></i> Inventario para etiquetas",
+            "titleAttr":"Exportar a Excel",
+            "className": "btn btn-success",
+            "exportOptions": { 
+                "columns": [ 0, 2, 5] 
+            }
         }
     ],
     "resonsieve":"true",

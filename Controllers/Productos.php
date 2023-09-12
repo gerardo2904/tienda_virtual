@@ -292,12 +292,12 @@
 			// codigo  -  marca+nombre  descripcion  -  precio
 			$salida  = "";
 			$salida .= "<table>";
-			$salida .= "<thead><th>Codigo</th><th>Nombre</th><th>Desctipcion</th><th>precio</th>";
+			$salida .= "<thead><th>Codigo</th><th>Descripcion</th><th>precio</th>";
 
 			
 			$arrData = $this->model->selectProdExcel();
 			for ($i=0; $i < count($arrData); $i++) {
-				$salida .= "<tr><td>".$arrData[$i]['codigo']."</td><td>".$arrData[$i]['nombre']."</td><td>".$arrData[$i]['descripcion']."</td><td>".SMONEY.' '.formatMoney($arrData[$i]['precio'])."</td></tr>";
+				$salida .= "<tr><td>".$arrData[$i]['codigo']."</td><td>".$arrData[$i]['nombre']."</td><td>".SMONEY.' '.formatMoney($arrData[$i]['precio'])."</td></tr>";
 			}
 			$salida .= "</table>";
 
