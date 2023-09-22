@@ -62,6 +62,10 @@
                                 <label class="control-label">Stock <span class="required">*</span></label>
                                 <input class="form-control" id="txtStock" name="txtStock" type="text" required="">
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="listProveedor">Proveedor <span class="required">*</span></label>
+                                <select class="form-control" data-live-search="true" id="listProveedor" name="listProveedor" required=""></select>
+                            </div>
                         </div>
 
                         <div class="row">

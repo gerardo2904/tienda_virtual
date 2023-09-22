@@ -15,6 +15,7 @@
 		private $strRuta;
 		private $strImagen;
 		private $intEmpresa;
+		private $intProveedor;
 
 		public function __construct()
 		{
@@ -38,26 +39,26 @@
 					WHERE p.status != 0 ";
                 */
                 $sql = "SELECT p.idproducto, p.codigo, p.nombre, p.marca, p.descripcion, p.categoriaid,
-	                    c.nombre as categoria,
-	                    p.precio, p.precio_compra, p.stock, p.status, p.idempresa, 
-                        (select img from imagen where productoid = p.idproducto limit 1) as img
-        FROM producto p 
-        INNER JOIN categoria c 
-        ON p.categoriaid = c.idcategoria
-        WHERE p.status != 0 AND p.idempresa= $intEmpresa";
-		$request = $this->select_all($sql);
-		return $request;
+				c.nombre as categoria, p.idproveedor, CONCAT(pe.nombres, ' ', pe.apellidos) as proveedor, 
+				p.precio, p.precio_compra, p.stock, p.status, p.idempresa, 
+				(select img from imagen where productoid = p.idproducto limit 1) as img
+				FROM producto p 
+				INNER JOIN categoria c ON p.categoriaid = c.idcategoria
+				INNER JOIN persona pe ON p.idproveedor = pe.idpersona
+        		WHERE p.status != 0 AND p.idempresa= $intEmpresa";
+			$request = $this->select_all($sql);
+			return $request;
 		}	
 
 		public function selectProductosV(){
 			$intEmpresa = intval($_SESSION['userData']['idempresa']);
             $sql = "SELECT p.idproducto, p.codigo, p.nombre, p.marca, p.descripcion, p.categoriaid,
-	                    c.nombre as categoria,
+	                    c.nombre as categoria, p.idproveedor, CONCAT(pe.nombres, ' ', pe.apellidos) as proveedor,
 	                    p.precio, p.precio_compra, p.stock, p.status, p.idempresa, 
                         (select img from imagen where productoid = p.idproducto limit 1) as img
         FROM producto p 
-        INNER JOIN categoria c 
-        ON p.categoriaid = c.idcategoria
+        INNER JOIN categoria c ON p.categoriaid = c.idcategoria
+		INNER JOIN persona pe ON p.idproveedor = pe.idpersona
         WHERE p.status != 0 AND p.idempresa= $intEmpresa AND p.stock > 0 ";
 		$request = $this->select_all($sql);
 		return $request;
@@ -65,7 +66,7 @@
 
 
         /*string $ruta, poner antes de status*/
-		public function insertProducto(string $nombre, string $marca, string $descripcion, int $codigo, int $categoriaid, string $precio, string $precio_compra, int $stock,  int $status, int $empresa){
+		public function insertProducto(string $nombre, string $marca, string $descripcion, int $codigo, int $categoriaid, string $precio, string $precio_compra, int $stock,  int $status, int $empresa, int $proveedor){
 			$this->strNombre = $nombre;
 			$this->strMarca = $marca;
 			$this->strDescripcion = $descripcion;
@@ -77,14 +78,15 @@
 			//$this->strRuta = $ruta;
 			$this->intStatus = $status;
 			$this->intEmpresa = $empresa;
+			$this->intProveedor = $proveedor;
 			$return = 0;
 			$sql = "SELECT * FROM producto WHERE codigo = '{$this->intCodigo}'";
 			$request = $this->select_all($sql);
 			if(empty($request))
 			{
                 /*ruta,  poner antes de status*/  /*,? poner al final de values*/
-				$query_insert  = "INSERT INTO producto(categoriaid, codigo, nombre, marca, descripcion, precio, precio_compra, stock,  status, idempresa) 
-								  VALUES(?,?,?,?,?,?,?,?,?,? )";
+				$query_insert  = "INSERT INTO producto(categoriaid, codigo, nombre, marca, descripcion, precio, precio_compra, stock,  status, idempresa, idproveedor) 
+								  VALUES(?,?,?,?,?,?,?,?,?,?,? )";
                 //$this->strRuta, poner antes de intStatus
 	        	$arrData = array($this->intCategoriaId,
         						$this->intCodigo,
@@ -95,7 +97,8 @@
 								$this->intPrecio_compra,
         						$this->intStock,
         						$this->intStatus,
-								$this->intEmpresa);
+								$this->intEmpresa,
+								$this->intProveedor);
                 //dep($query_insert);
                 //dep($arrData);
                 //die();
@@ -107,7 +110,7 @@
 	        return $return;
 		}
         // string $ruta, poner antes de status
-		public function updateProducto(int $idproducto, string $nombre, string $marca, string $descripcion, int $codigo, int $categoriaid, string $precio, string $precio_compra, int $stock,  int $status, int $empresa){
+		public function updateProducto(int $idproducto, string $nombre, string $marca, string $descripcion, int $codigo, int $categoriaid, string $precio, string $precio_compra, int $stock,  int $status, int $empresa, int $proveedor){
 			$this->intIdProducto = $idproducto;
 			$this->strNombre = $nombre;
 			$this->strMarca = $marca;
@@ -120,6 +123,8 @@
 			//$this->strRuta = $ruta;
 			$this->intStatus = $status;
 			$this->intEmpresa = $empresa;
+			$this->intProveedor = $proveedor;
+
 			$return = 0;
 			$sql = "SELECT * FROM producto WHERE codigo = '{$this->intCodigo}' AND idproducto != $this->intIdProducto ";
 			$request = $this->select_all($sql);
@@ -136,7 +141,8 @@
 							precio_compra=?,
 							stock=?,
 							status=?,
-							idempresa=? 
+							idempresa=?,
+							idproveedor=?  
 						WHERE idproducto = $this->intIdProducto ";
                  // $this->strRuta,
 				$arrData = array($this->intCategoriaId,
@@ -148,7 +154,8 @@
 								$this->intPrecio_compra,
         						$this->intStock,
         						$this->intStatus,
-								$this->intEmpresa);
+								$this->intEmpresa,
+								$this->intProveedor);
 
 	        	$request = $this->update($sql,$arrData);
 	        	$return = $request;
@@ -172,11 +179,13 @@
 							p.categoriaid,
 							c.nombre as categoria,
 							p.status,
-							p.idempresa
+							p.idempresa,
+							p.idproveedor,
+							CONCAT(pe.nombres,' ', pe.apellidos) as proveedor
 					FROM producto p
-					INNER JOIN categoria c
-					ON p.categoriaid = c.idcategoria
-					WHERE idproducto = $this->intIdProducto AND idempresa= $intEmpresa";
+					INNER JOIN categoria c ON p.categoriaid = c.idcategoria
+					INNER JOIN persona pe ON p.idproveedor = pe.idpersona
+					WHERE idproducto = $this->intIdProducto AND p.idempresa= $intEmpresa";
 			$request = $this->select($sql);
 			//dep($request);
 			return $request;

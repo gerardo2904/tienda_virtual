@@ -85,6 +85,7 @@
 					$intStock = intval($_POST['txtStock']);
 					$intStatus = intval($_POST['listStatus']);
 					$intEmpresa = intval($_SESSION['userData']['idempresa']);
+					$idProveedor = intval($_POST['listProveedor']);
 					$request_producto = "";
 
 					//$ruta = strtolower(clear_cadena($strNombre));
@@ -104,7 +105,8 @@
 																		$strPrecio_compra,
 																		$intStock, 
 																		$intStatus,
-																		$intEmpresa );
+																		$intEmpresa,
+																		$idProveedor );
 						}
 					}else{
 						$option = 2;
@@ -120,7 +122,8 @@
 																		$strPrecio_compra,
 																		$intStock, 
 																		$intStatus,
-																		$intEmpresa);
+																		$intEmpresa,
+																		$idProveedor);
 						}
 					}
 					if($request_producto > 0 )

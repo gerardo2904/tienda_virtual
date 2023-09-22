@@ -95,6 +95,9 @@ window.addEventListener('load', function() {
         let formProductos = document.querySelector("#formProductos");
         formProductos.onsubmit = function(e) {
             e.preventDefault();
+            
+            let intIdProveedor = document.querySelector("#listProveedor").selectedOptions[0].text;
+
             let strNombre = document.querySelector('#txtNombre').value;
             let strMarca = document.querySelector('#txtMarca').value;
             let intCodigo = document.querySelector('#txtCodigo').value;
@@ -175,6 +178,7 @@ window.addEventListener('load', function() {
 
     fntInputFile();
     fntCategorias();
+    fntProveedores();
 }, false);
 
 if(document.querySelector("#txtCodigo")){
@@ -375,9 +379,11 @@ function fntEditInfo(element,idProducto){
                 document.querySelector("#txtStock").value = objProducto.stock;
                 document.querySelector("#listCategoria").value = objProducto.categoriaid;
                 document.querySelector("#listStatus").value = objProducto.status;
+                document.querySelector('#listProveedor').value = objProducto.idproveedor;
                 tinymce.activeEditor.setContent(objProducto.descripcion); 
                 $('#listCategoria').selectpicker('render');
                 $('#listStatus').selectpicker('render');
+                $('#listProveedor').selectpicker('render');
                 fntBarcode();
 
                 if(objProducto.images.length > 0){
@@ -489,3 +495,22 @@ function openModal(){
         fntCodigoMax();
     }
 }
+
+function fntProveedores(){
+    if(document.querySelector('#listProveedor')){
+        let ajaxUrl = base_url+'Proveedores/getSelectProveedores';
+        let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        request.open("GET", ajaxUrl, true);
+        request.send();
+        request.onreadystatechange = function(){
+            if(request.readyState == 4 && request.status == 200){
+                //debugger;
+                //console.log(request);
+                document.querySelector('#listProveedor').innerHTML = request.responseText;
+                //document.querySelector('#listRolid').value=1; 
+                $('#listProveedor').selectpicker('render');      
+            }
+        }
+    }
+}
+
