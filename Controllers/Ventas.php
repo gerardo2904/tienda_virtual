@@ -377,7 +377,7 @@
 						$pdf->SetLeftMargin(1);
 						$pdf->Ln(2);
 						$pdf->SetFont('Arial','',10);
-						$pdf->Multicell(55,4,$arrProds[$i]['marca']." ".$arrProds[$i]['nombre'],0,'L');
+						$pdf->Multicell(55,4,$arrProds[$i]['codigo'].' '.$arrProds[$i]['marca']." ".$arrProds[$i]['nombre'],0,'L');
 
 						$pdf->SetLeftMargin(1);
 						$pdf->SetFont('Arial','B',10);
