@@ -330,7 +330,7 @@ function fntObtieneCFDI(){
 }
 
 function fntCambioCFDI(){   
-    let ajaxUrl = base_url+'Clientes/getSelectCFDI/'+document.querySelector('#listRegimen').value;
+    let ajaxUrl = base_url+'Proveedores/getSelectCFDI/'+document.querySelector('#listRegimen').value;
     let requestRe = (window.XMLHttpRequest) ? 
                 new XMLHttpRequest() : 
                 new ActiveXObject('Microsoft.XMLHTTP');

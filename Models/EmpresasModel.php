@@ -234,26 +234,17 @@
         }
 
         public function selectCiudad($estado){
-            $sql = "SELECT id, nombre, edo
-                    FROM municipios 
-                    order by id ASC";
-                    /*
-                    if($regimen>0){
-                        $sql = "SELECT cf.id, cf.clave_uso, cf.descripcion_uso 
-                        from regfdi 
-                        inner join cfdi cf ON cf.id = regfdi.cfdi 
-                        inner join rfiscal reg ON reg.id = regfdi.regimen 
-                        where regfdi.regimen=".$regimen;
-                    }else{
-                        $sql = "SELECT id, clave_uso, descripcion_uso
-                        FROM cfdi 
-                        order by id ASC";
-                    }
-                    */
+			if($estado>0){
+				$sql = "SELECT id, nombre, edo FROM `municipios` WHERE edo=".$estado;
+			}else{
+				$sql = "SELECT id, nombre, edo
+				FROM `municipios`
+				order by id ASC";
+			}
 
-            //dep($sql);die();
-            $request = $this->select_all($sql);
-            return $request;
+			//dep($sql);die();
+			$request = $this->select_all($sql);
+			return $request;
         }
 
 	}

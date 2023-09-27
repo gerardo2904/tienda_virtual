@@ -321,7 +321,119 @@
 		}
 
 
+		public function setProveedor(){
+            if($_POST){
+                //dep($_POST);
+                //die();
+                if(/*empty($_POST['txtIdentificacion']) || */ empty($_POST['txtNombreP']) || empty($_POST['txtApellido']) || empty($_POST['txtTelefono']) || empty($_POST['txtEmail']) /*|| empty($_POST['txtNit']) || empty($_POST['txtNombreFiscal']) || empty($_POST['txtDirFiscal'])*/)
+                {
+                    $arrResponse = array("status" => false, "msg" => 'Datos incorrectos,');
+                }else {
+                    // Como no lo estamos enviando este parametro, se va a alamacenar 0 (para Proveedores)
+                    $idUsuario = intval($_POST['idUsuario']);
+                    $strIdentificacion = strClean($_POST['txtIdentificacion']);
+                    $strNombre = ucwords(strClean($_POST['txtNombreP']));
+                    $strApellido = ucwords(strClean($_POST['txtApellido']));
+                    $intTelefono = intval(strClean($_POST['txtTelefono']));
+                    $strEmail = strtolower(strClean($_POST['txtEmail']));
+                    $strNit = strClean($_POST['txtNit']);
+                    $strNomFiscal = strClean($_POST['txtNombreFiscal']);
+                    $strDirFiscal = strClean($_POST['txtDirFiscal']);
+                    $strNumExt = strClean($_POST['txtNumExt']);
+                    $strNumInt = strClean($_POST['txtNumInt']);
+                    $strColonia = strClean($_POST['txtColonia']);
+                    $strCP = strClean($_POST['txtCP']);
 
+                    $intlistEstado = strClean($_POST['listEstado']);
+                    $intlistCiudad = strClean($_POST['listCiudad']);
+                    $intlistRegimen = strClean($_POST['listRegimen']);
+                    $intlistCFDI = strClean($_POST['listCFDI']);
+
+                    // 10 es el rolid de proveedor de la tienda
+                    $intTipoId = 10;
+                    $request_user = "";
+                    
+                    if($idUsuario == 0){
+                        $option = 1;
+                        $strPassword = empty($_POST['txtPassword']) ? passGenerator() : $_POST['txtPassword'];
+                        $strPasswordEncript = hash("SHA256", $strPassword);
+                        if($_SESSION['permisosMod']['w']){
+                            $request_user = $this->model->insertProveedor($strIdentificacion, 
+                                                                        $strNombre, 
+                                                                        $strApellido, 
+                                                                        $intTelefono, 
+                                                                        $strEmail, 
+                                                                        $strPasswordEncript, 
+                                                                        $intTipoId,
+                                                                        $strNit, 
+                                                                        $strNomFiscal, 
+                                                                        $strDirFiscal,
+                                                                        $strNumExt,
+                                                                        $strNumInt,
+                                                                        $strColonia,
+                                                                        $strCP,
+                                                                        $intlistEstado,
+                                                                        $intlistCiudad,
+                                                                        $intlistRegimen,
+                                                                        $intlistCFDI);
+                        }
+                    }else {
+                        $option = 2;
+                        $strPassword = empty($_POST['txtPassword']) ? "": hash("SHA256", $_POST['txtPassword']);
+                        if($_SESSION['permisosMod']['u']){
+                            $request_user = $this->model->updateProveedor($idUsuario, 
+                                                                        $strIdentificacion, 
+                                                                        $strNombre, 
+                                                                        $strApellido, 
+                                                                        $intTelefono, 
+                                                                        $strEmail, 
+                                                                        $strPassword, 
+                                                                        $strNit, 
+                                                                        $strNomFiscal, 
+                                                                        $strDirFiscal,
+                                                                        $strNumExt,
+                                                                        $strNumInt,
+                                                                        $strColonia,
+                                                                        $strCP,
+                                                                        $intlistEstado,
+                                                                        $intlistCiudad,
+                                                                        $intlistRegimen,
+                                                                        $intlistCFDI);
+                        }
+                        
+                    }
+                    
+
+                    if($request_user > 0){
+                        if($option == 1){
+                            $arrResponse = array("status" => true, "msg" => 'Datos guardados correctamente.');
+                            $nombreUsuario = $strNombre.' '.$strApellido;
+                            $dataUsuario = array('nombreUsuario' => $nombreUsuario,
+                                                 'email' => $strEmail,
+                                                 'password' => $strPassword,
+                                                 'asunto' => 'Bienvenido a tu tienda en linea.');
+                            sendEmail($dataUsuario,'email_bienvenida');
+
+                        }else {
+                            $arrResponse = array("status" => true, "msg" => 'Datos actualizados correctamente.');
+                        }
+                        
+                    }else if($request_user == 'exist'){
+                        $arrResponse = array("status" => false, "msg" => 'El email o la identificación ya existen, ingresar otro.');
+                    }else{
+                        $arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
+                    }
+                    
+                }
+                //sleep(3);
+                echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+
+            }
+            
+            die();
+        }
 
      }
+
+
 ?>

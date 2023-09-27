@@ -63,7 +63,7 @@
                                 <input class="form-control" id="txtStock" name="txtStock" type="text" required="">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="listProveedor">Proveedor <span class="required">*</span></label>
+                                <label for="listProveedor">Proveedor <span class="required">*</span></label><button id="btnAlta" class="btn btn-lnk text-primary" type="button" onclick="nuevoProveedor();">+ Nuevo</button>
                                 <select class="form-control" data-live-search="true" id="listProveedor" name="listProveedor" required=""></select>
                             </div>
                         </div>
@@ -191,3 +191,111 @@
   </div>
 </div>
 
+<!-- Modal alta proveedor-->
+<div class="modal fade" id="modalAltaProv" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header headerIngreso">
+        <h5 class="modal-title" id="titleModal">Alta de Proveedor</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <form id="formProveedor" name="formProveedor" class="form-horizontal">
+            <input type="hidden" id="idUsuario" name="idUsuario" value="">
+            <input type="hidden" id="txtIdentificacion" name="txtIdentificacion" value="">
+            <p class="text-primary">Los campos con asterisco (<span class="required">*</span>) son obligatorios.</p>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="txtNombre">Nombre(s) <span class="required">*</span> </label>
+                    <input type="text" class="form-control valid validText" id="txtNombreP" name="txtNombreP" required="">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="txtApellido">Apellidos <span class="required">*</span> </label>
+                    <input type="text" class="form-control valid validText" id="txtApellido" name="txtApellido" required="">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="txtTelefono">Teléfono <span class="required">*</span> </label>
+                    <input type="text" class="form-control valid validNumber" id="txtTelefono" name="txtTelefono" required="" onkeypress="return controlTag(event);">
+                </div>
+            </div>
+            
+            <HR>
+            <!-- <P class="text-primary">Datos Fiscales </P>  -->
+            <button class="btn btn-sm btn-outline-primary" type="button" onclick="muestraRFC();">Datos fiscales y otros</button>
+            <P></P>
+            <div id="fiscales" class="notBlock">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>RFC <span class="required"></span> </label>
+                        <input type="text" class="form-control" id="txtNit" name="txtNit"  >  
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Nombre Fiscal <span class="required"></span> </label>
+                        <input type="text" class="form-control" id="txtNombreFiscal" name="txtNombreFiscal"  >  
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Calle <span class="required"></span> </label>
+                        <input type="text" class="form-control" id="txtDirFiscal" name="txtDirFiscal"  >  
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Número exterior <span class="required"></span> </label>
+                        <input type="text" class="form-control" id="txtNumExt" name="txtNumExt"  >  
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Número interior <span class="required"></span> </label>
+                        <input type="text" class="form-control" id="txtNumInt" name="txtNumInt"  >  
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label>Colonia <span class="required"></span> </label>
+                        <input type="text" class="form-control" id="txtColonia" name="txtColonia"  >  
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>CP <span class="required"></span> </label>
+                        <input type="text" class="form-control" id="txtCP" name="txtCP"  >  
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="listEstado">Estado</label>
+                        <select class="form-control" data-live-search="true" id="listEstado" name="listEstado" onchange="fntCambioCiudad();"></select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="listCiudad">Ciudad</label>
+                        <select class="form-control" data-live-search="true" id="listCiudad" name="listCiudad" ></select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="listRegimen">Regimen fiscal</label>
+                        <select class="form-control" data-live-search="true" id="listRegimen" name="listRegimen" onchange="fntCambioCFDI();"></select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="listRegimen">Uso CFDI</label>
+                        <select class="form-control" data-live-search="true" id="listCFDI" name="listCFDI"  ></select>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                    <label for="txtApellido">Email <span class="required">*</span> </label>
+                    <input type="email" class="form-control valid validEmail" id="txtEmail" name="txtEmail" required="">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="txtPassword">Password <span class="required"> </span> </label>
+                    <input type="password" class="form-control" id="txtPassword" name="txtPassword">
+                </div>
+
+                </div>
+                <P></P>
+            </div>
+
+            <div class="tile-footer">
+                <button id="btnActionForm" class="btn btn-primary" type="submit">
+                    <i class="fa fa-fw fa-lg fa-check-circle"></i><span id="btnText">Guardar</span></button>&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" type="button"  data-dismiss="modal">
+                    <i class="fa fa-fw fa-lg fa-times-circle"></i>Cerrar</button>
+            </div>
+            </form>
+        </div>  
+    </div>
+  </div>
+</div>

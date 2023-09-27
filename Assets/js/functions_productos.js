@@ -25,6 +25,7 @@ tableProductos = $('#tableProductos').dataTable( {
         {"data":"codigo"},
         {"data":"marca"},
         {"data":"nombre"},
+        {"data":"categoria"},
         {"data":"stock"},
         {"data":"precio_compra"},
         {"data":"precio"},
@@ -47,7 +48,7 @@ tableProductos = $('#tableProductos').dataTable( {
             "titleAttr":"Copiar",
             "className": "btn btn-secondary",
             "exportOptions": { 
-                "columns": [ 0, 1, 2, 3, 4, 5] 
+                "columns": [ 0, 1, 2, 3, 4, 5,6] 
             }
         },{
             "extend": "excelHtml5",
@@ -55,7 +56,7 @@ tableProductos = $('#tableProductos').dataTable( {
             "titleAttr":"Exportar a Excel",
             "className": "btn btn-success",
             "exportOptions": { 
-                "columns": [ 0, 1, 2, 3, 4, 5] 
+                "columns": [ 0, 1, 2, 3, 4, 5,6] 
             }
         },{
             "extend": "pdfHtml5",
@@ -63,7 +64,7 @@ tableProductos = $('#tableProductos').dataTable( {
             "titleAttr":"Exportar a PDF",
             "className": "btn btn-danger",
             "exportOptions": { 
-                "columns": [ 0, 1, 2, 3, 4, 5] 
+                "columns": [ 0, 1, 2, 3, 4, 5,6] 
             }
         },{
             "extend": "csvHtml5",
@@ -71,7 +72,7 @@ tableProductos = $('#tableProductos').dataTable( {
             "titleAttr":"Exportar a CSV",
             "className": "btn btn-info",
             "exportOptions": { 
-                "columns": [ 0, 1, 2, 3, 4, 5] 
+                "columns": [ 0, 1, 2, 3, 4, 5,6] 
             }
         },{
             "extend": "excelHtml5",
@@ -91,6 +92,24 @@ tableProductos = $('#tableProductos').dataTable( {
 
 
 window.addEventListener('load', function() {
+    //fntProveedores();
+    const opcionCambiada = () => {
+        
+        $('#listProveedor').selectpicker('render');      
+        //console.log("cliente: "+document.formVentas.querySelector('#listCliente').innerHTML);
+    };
+
+    $select=document.querySelector("#listProveedor");
+    $select.addEventListener("change", opcionCambiada);
+
+    // Si se activa un modal  fntClientes2();
+
+    $('#modalAltaProv').on('hidden.bs.modal', function (event) {
+        //alert("si");
+        fntProveedores2();
+    })
+
+
     if(document.querySelector("#formProductos")){
         let formProductos = document.querySelector("#formProductos");
         formProductos.onsubmit = function(e) {
@@ -105,6 +124,7 @@ window.addEventListener('load', function() {
             let strPrecio_compra = document.querySelector('#txtPrecio_compra').value;
             let intStock = document.querySelector('#txtStock').value;
             let intStatus = document.querySelector('#listStatus').value;
+            let strCatego = document.querySelector("#listCategoria").selectedOptions[0].text;
 
             //fntCodigoMax();
             if(strNombre == '' || intCodigo == '' || strPrecio == '' || intStock == '' )
@@ -143,10 +163,11 @@ window.addEventListener('load', function() {
                             rowTable.cells[0].textContent = intCodigo;
                             rowTable.cells[1].textContent = strMarca;
                             rowTable.cells[2].textContent = strNombre;
-                            rowTable.cells[3].textContent = intStock;
-                            rowTable.cells[4].textContent = smony+strPrecio_compra;
-                            rowTable.cells[5].textContent = smony+strPrecio;
-                            rowTable.cells[6].innerHTML =  htmlStatus;
+                            rowTable.cells[3].textContent = strCatego;
+                            rowTable.cells[4].textContent = intStock;
+                            rowTable.cells[5].textContent = smony+strPrecio_compra;
+                            rowTable.cells[6].textContent = smony+strPrecio;
+                            rowTable.cells[7].innerHTML =  htmlStatus;
                             rowTable = ""; 
                         }
                     }else{
@@ -158,6 +179,64 @@ window.addEventListener('load', function() {
             }
         }
     }
+
+    if(document.querySelector("#formProveedor")){
+        let formProveedor = document.querySelector('#formProveedor');
+        formProveedor.onsubmit = function(e){
+            e.preventDefault();
+            let strIdentificacion = document.querySelector('#txtIdentificacion').value;
+            let strNombre = document.querySelector('#txtNombreP').value;
+            let strApellido = document.querySelector('#txtApellido').value;
+            let strEmail = document.querySelector('#txtEmail').value;
+            let intTelefono = document.querySelector('#txtTelefono').value;
+            let strNit = document.querySelector('#txtNit').value;
+            let strNombreFiscal = document.querySelector('#txtNombreFiscal').value;
+            let strDirFiscal = document.querySelector('#txtDirFiscal').value;
+
+            let strPassword = document.querySelector('#txtPassword').value;
+            
+
+            if(/*strIdentificacion == '' || */ strNombre == '' || strApellido == '' ||  strEmail == '' || intTelefono == '' /*|| strNit == '' || strNombreFiscal == '' || strDirFiscal == '' */){
+                swal("Atención","Todos los campos son obligatorios.","error");
+                return false;
+            }
+
+            let elementsValid = document.getElementsByClassName("valid");
+            for (let i = 0 ; i < elementsValid.length; i++){
+                if (elementsValid[i].classList.contains('is-invalid')){
+                    swal("Atención", "Por favor verifique los campos en rojo.", "error");
+                    return false;
+                }
+            }
+
+            divLoading.style.display = "flex";
+
+            let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            let ajaxUrl = base_url+'Productos/setProveedor';
+            let formData = new FormData(formProveedor);
+            request.open('POST',ajaxUrl, true);
+            request.send(formData);
+
+            request.onreadystatechange = function(){
+                if(request.readyState == 4 && request.status == 200){
+                    let objData = JSON.parse(request.responseText);
+                    if(objData.status){  
+                        $('#modalAltaProv').modal("hide");
+                        formProveedor.reset();
+                        //swal("Clientes", objData.msg, "success");
+                    }else{
+                        swal("Error", objData.msg, "error");
+                    }
+                }
+                divLoading.style.display = "none";
+                
+                return false;
+            }
+
+        }
+    }
+    
+
 
     if(document.querySelector(".btnAddImage")){
        let btnAddImage =  document.querySelector(".btnAddImage");
@@ -178,8 +257,53 @@ window.addEventListener('load', function() {
 
     fntInputFile();
     fntCategorias();
-    fntProveedores();
+    //fntProveedores();
+
+    fntProveedores2();
+    fntObtieneRegimen();
+    fntObtieneCFDI();
+    fntObtieneEstado();
+    fntObtieneCiudad();
+
 }, false);
+
+function fntProveedores(){
+    if(document.querySelector('#listProveedor')){
+        let ajaxUrl = base_url+'Proveedores/getSelectProveedores';
+        let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        request.open("GET", ajaxUrl, true);
+        request.send();
+        request.onreadystatechange = function(){
+            if(request.readyState == 4 && request.status == 200){
+                //debugger;
+                //console.log(request);
+                document.querySelector('#listProveedor').innerHTML = request.responseText;
+                //document.querySelector('#listRolid').value=1; 
+                $('#listProveedor').selectpicker('render');      
+            }
+        }
+    }
+}
+
+function fntProveedores2(){
+    //console.log("cliente: "+document.formVentas.querySelector('#listCliente').value);
+    if(document.formProductos.querySelector('#listProveedor')){
+        let ajaxUrl = base_url+'Proveedores/getSelectProveedores';
+        let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        request.open("GET", ajaxUrl, true);
+        request.send();
+        request.onreadystatechange = function(){
+            if(request.readyState == 4 && request.status == 200){
+                document.formProductos.querySelector('#listProveedor').innerHTML = request.responseText;
+                $('#listProveedor').selectpicker('refresh');
+                $('#listProveedor').selectpicker('render');
+                
+                  
+            }
+        }
+    }
+}
+
 
 if(document.querySelector("#txtCodigo")){
     let inputCodigo = document.querySelector('#txtCodigo');
@@ -495,7 +619,7 @@ function openModal(){
         fntCodigoMax();
     }
 }
-
+/*
 function fntProveedores(){
     if(document.querySelector('#listProveedor')){
         let ajaxUrl = base_url+'Proveedores/getSelectProveedores';
@@ -513,4 +637,162 @@ function fntProveedores(){
         }
     }
 }
+*/
 
+function muestraRFC(){
+    if (document.querySelector('#fiscales').classList.contains("notBlock")){
+        document.querySelector('#fiscales').classList.remove("notBlock");
+    }else{
+        document.querySelector('#fiscales').classList.add("notBlock");
+    }
+    //$('#fiscales').fadeToggle();
+}
+
+function fntEmailAle(){
+    let ajaxUrl = base_url+'Proveedores/getMailAle';
+    let request = (window.XMLHttpRequest) ? 
+                    new XMLHttpRequest() : 
+                    new ActiveXObject('Microsoft.XMLHTTP');
+        request.open("GET",ajaxUrl,true);
+        request.send();
+        request.onreadystatechange = function(){
+            if(request.readyState == 4 && request.status == 200){
+                let objP = JSON.parse(request.responseText);
+                if(objP.status)
+                { 
+                    document.querySelector("#txtEmail").value = objP.msg;
+                    document.querySelector("#txtNombreP").focus();
+                    //$('#txtNombre').focus();
+                }
+
+            }
+        }
+}
+
+function nuevoProveedor(){
+    document.querySelector('.modal-header').classList.replace("headerRegister","header-primary");
+    $('#modalAltaProv').modal('show');
+    fntEmailAle();
+}
+
+function fntObtieneRegimen(){
+    if(document.querySelector('#listRegimen')){
+        let ajaxUrl = base_url+'Proveedores/getSelectRegimen';
+        let requestRe = (window.XMLHttpRequest) ? 
+                    new XMLHttpRequest() : 
+                    new ActiveXObject('Microsoft.XMLHTTP');
+        requestRe.open("GET",ajaxUrl,true);
+        requestRe.send();
+        requestRe.onreadystatechange = function(){
+            if(requestRe.readyState == 4 && requestRe.status == 200){
+                document.querySelector('#listRegimen').innerHTML = requestRe.responseText;
+                $('#listRegimen').selectpicker('render');  
+            }
+        }
+    }
+}
+
+function fntObtieneCFDI(){
+    if(document.querySelector('#listCFDI')){
+        let ajaxUrl = base_url+'Proveedores/getSelectCFDI/'+document.querySelector('#listRegimen').value;
+        let requestRe = (window.XMLHttpRequest) ? 
+                    new XMLHttpRequest() : 
+                    new ActiveXObject('Microsoft.XMLHTTP');
+        requestRe.open("GET",ajaxUrl,true);
+        requestRe.send();
+        requestRe.onreadystatechange = function(){
+            if(requestRe.readyState == 4 && requestRe.status == 200){
+                //document.querySelector('#listCFDI').innerHTML = requestRe.responseText;
+                //$('#listCFDI').selectpicker('render');  
+                document.querySelector('#listCFDI').innerHTML = '';
+                $('#listCFDI').selectpicker('destroy');
+
+                document.querySelector('#listCFDI').innerHTML = requestRe.responseText;
+                $('#listCFDI').selectpicker('get');
+            }
+        }
+    }
+}
+
+function fntCambioCFDI(){   
+    let ajaxUrl = base_url+'Proveedores/getSelectCFDI/'+document.querySelector('#listRegimen').value;
+    let requestRe = (window.XMLHttpRequest) ? 
+                new XMLHttpRequest() : 
+                new ActiveXObject('Microsoft.XMLHTTP');
+    requestRe.open("GET",ajaxUrl,true);
+    requestRe.send();
+    requestRe.onreadystatechange = function(){
+        if(requestRe.readyState == 4 && requestRe.status == 200){
+            
+            document.querySelector('#listCFDI').innerHTML = '';
+            $('#listCFDI').selectpicker('destroy');
+
+            document.querySelector('#listCFDI').innerHTML = requestRe.responseText;
+            $('#listCFDI').selectpicker('get');
+            $('#listCFDI').selectpicker('render');  
+            
+        }
+    }
+}
+
+function fntObtieneEstado(){
+    if(document.querySelector('#listEstado')){
+        let ajaxUrl = base_url+'Proveedores/getSelectEstado';
+        let requestRe = (window.XMLHttpRequest) ? 
+                    new XMLHttpRequest() : 
+                    new ActiveXObject('Microsoft.XMLHTTP');
+        requestRe.open("GET",ajaxUrl,true);
+        requestRe.send();
+        requestRe.onreadystatechange = function(){
+            if(requestRe.readyState == 4 && requestRe.status == 200){
+                document.querySelector('#listEstado').innerHTML = requestRe.responseText;
+                $('#listEstado').selectpicker('render');  
+            }
+        }
+    }
+}
+
+function fntObtieneCiudad(){
+    if(document.querySelector('#listCiudad')){
+        let ajaxUrl = base_url+'Proveedores/getSelectCiudad/'+document.querySelector('#listEstado').value;
+        let requestRe = (window.XMLHttpRequest) ? 
+                    new XMLHttpRequest() : 
+                    new ActiveXObject('Microsoft.XMLHTTP');
+        requestRe.open("GET",ajaxUrl,true);
+        requestRe.send();
+        requestRe.onreadystatechange = function(){
+            if(requestRe.readyState == 4 && requestRe.status == 200){
+                //document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
+                //$('#listCiudad').selectpicker('render');  
+                document.querySelector('#listCiudad').innerHTML = '';
+                $('#listCiudad').selectpicker('destroy');
+
+                document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
+                $('#listCiudad').selectpicker('get');
+                $('#listCiudad').selectpicker('render');  
+            }
+        }
+    }
+}
+
+function fntCambioCiudad(){   
+    let ajaxUrl = base_url+'Proveedores/getSelectCiudad/'+document.querySelector('#listEstado').value;
+    let requestRe = (window.XMLHttpRequest) ? 
+                new XMLHttpRequest() : 
+                new ActiveXObject('Microsoft.XMLHTTP');
+    requestRe.open("GET",ajaxUrl,true);
+    requestRe.send();
+    requestRe.onreadystatechange = function(){
+        if(requestRe.readyState == 4 && requestRe.status == 200){
+            
+            document.querySelector('#listCiudad').innerHTML = '';
+            $('#listCiudad').selectpicker('destroy');
+
+            document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
+            $('#listCiudad').selectpicker('get');
+            $('#listCiudad').selectpicker('render');  
+            
+        }
+    }
+
+}

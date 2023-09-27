@@ -32,6 +32,7 @@
                       <th>Código</th>
                       <th>Marca</th>
                       <th>Referencia</th>
+                      <th>Categoría</th>
                       <th>Stock</th>
                       <th>Costo P.</th>
                       <th>Venta P.</th>
