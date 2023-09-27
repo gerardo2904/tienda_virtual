@@ -85,7 +85,7 @@
 
                         <div class="form-group col-md-3">
                         <label for="listEstado">Estado</label>
-                            <select class="form-control" data-live-search="true" id="listEstado" name="listEstado" ></select>
+                            <select class="form-control" data-live-search="true" id="listEstado" name="listEstado" onchange="fntCambioCiudad();"></select>
                         </div>
 
                         <div class="form-group col-md-3">
@@ -95,7 +95,7 @@
                         
                         <div class="form-group col-md-6">
                             <label for="listRegimen">Regimen fiscal</label>
-                            <select class="form-control" data-live-search="true" id="listRegimen" name="listRegimen" ></select>
+                            <select class="form-control" data-live-search="true" id="listRegimen" name="listRegimen" onchange="fntCambioCFDI();"></select>
                         </div>
 
                         <div class="form-group col-md-6">

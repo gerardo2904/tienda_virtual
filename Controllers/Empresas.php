@@ -52,6 +52,7 @@
 
                     
                     $intTelEmpresa = intval(strClean($_POST['txtTelEmpresa']));
+                    $intCelEmpresa = intval(strClean($_POST['txtCelEmpresa']));
                     $strEmailEmpresa = strClean($_POST['txtEmailEmpresa']);
                     $intStatus = intval($_POST['listStatus']);
                     
@@ -75,7 +76,8 @@
                                                                         $strCP,
                                                                         $intlistEstado,
                                                                         $intlistCiudad,
-                                                                        $intlistRegimen);
+                                                                        $intlistRegimen,
+                                                                        $intCelEmpresa);
                         }
                     }else {
                         $option = 2;
@@ -93,7 +95,8 @@
                                                                         $strCP,
                                                                         $intlistEstado,
                                                                         $intlistCiudad,
-                                                                        $intlistRegimen);
+                                                                        $intlistRegimen,
+                                                                        $intCelEmpresa);
                         }
                         
                     }

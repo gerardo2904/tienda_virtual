@@ -364,29 +364,6 @@ function fntCambioCFDI(){
     }
 }
 
-function fntCambioCiudad(){   
-    let ajaxUrl = base_url+'Clientes/getSelectCiudad/'+document.querySelector('#listEstado').value;
-    let requestRe = (window.XMLHttpRequest) ? 
-                new XMLHttpRequest() : 
-                new ActiveXObject('Microsoft.XMLHTTP');
-    requestRe.open("GET",ajaxUrl,true);
-    requestRe.send();
-    requestRe.onreadystatechange = function(){
-        if(requestRe.readyState == 4 && requestRe.status == 200){
-            
-            document.querySelector('#listCiudad').innerHTML = '';
-            $('#listCiudad').selectpicker('destroy');
-
-            document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
-            $('#listCiudad').selectpicker('get');
-            $('#listCiudad').selectpicker('render');  
-            
-        }
-    }
-
-}
-
-
 function fntObtieneEstado(){
     if(document.querySelector('#listEstado')){
         let ajaxUrl = base_url+'Clientes/getSelectEstado';
@@ -423,6 +400,28 @@ function fntObtieneCiudad(){
             }
         }
     }
+}
+
+function fntCambioCiudad(){   
+    let ajaxUrl = base_url+'Clientes/getSelectCiudad/'+document.querySelector('#listEstado').value;
+    let requestRe = (window.XMLHttpRequest) ? 
+                new XMLHttpRequest() : 
+                new ActiveXObject('Microsoft.XMLHTTP');
+    requestRe.open("GET",ajaxUrl,true);
+    requestRe.send();
+    requestRe.onreadystatechange = function(){
+        if(requestRe.readyState == 4 && requestRe.status == 200){
+            
+            document.querySelector('#listCiudad').innerHTML = '';
+            $('#listCiudad').selectpicker('destroy');
+
+            document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
+            $('#listCiudad').selectpicker('get');
+            $('#listCiudad').selectpicker('render');  
+            
+        }
+    }
+
 }
 
 

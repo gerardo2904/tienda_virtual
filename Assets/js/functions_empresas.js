@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function(){
             let strCiudadEmpresa = document.querySelector('#listCiudad').value;
             let intCpEmpresa = document.querySelector('#txtCP').value;
             let intTelEmpresa = document.querySelector('#txtTelEmpresa').value;
+            //let intCelEmpresa = document.querySelector('#txtCelEmpresa').value;
             let strEmailEmpresa = document.querySelector('#txtEmailEmpresa').value;
             let intStatus = document.querySelector('#listStatus').value;
             
@@ -320,6 +321,7 @@ function fntEditInfo(element, empresa){
                 document.querySelector("#txtRfcEmpresa").value = objData.data.rfcempresa;
                 document.querySelector("#txtDireccionEmpresa").value = objData.data.direccionempresa;
                 document.querySelector("#txtTelEmpresa").value = objData.data.telempresa;
+                document.querySelector("#txtCelEmpresa").value = objData.data.celempresa;
                 document.querySelector("#txtEmailEmpresa").value = objData.data.emailempresa;
                 document.querySelector("#listStatus").value = objData.data.status;
                 //document.querySelector("#txtFechaRegistro").innerHTML = objData.data.updated_at;

@@ -217,6 +217,16 @@
 			die();	
 		}
 
+        public function getMailAle(){
+            //$permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $permitted_chars_email = 'abcdefghijklmnopqrstuvwxyz';
+            $hoy = date("dmY");
+            $return = substr(str_shuffle($permitted_chars_email), 0, 10).$hoy."@".substr(str_shuffle($permitted_chars_email), 0, 5).".com";
+            $arrResponse = array('status' => true, 'msg' => $return);
+            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+            die();
+        }
+        
         public function getSelectRegimen(){
             $htmlOptions = "";
             $arrData = $this->model->selectRegimen();

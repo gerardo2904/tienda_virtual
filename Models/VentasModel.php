@@ -253,14 +253,14 @@
 		public function selectVenta(int $idventa){
 			$this->intIdVenta = $idventa;
 			$sql = "SELECT i.idventa, i.idcliente, i.idpersona, i.comprobante, i.impuesto,
-			concat(p.nombres, ' ', p.apellidos) as nombre_cliente,
+			concat(p.nombres, ' ', p.apellidos) as nombre_cliente, p.telefono as telcliente,
 			i.notas, i.status, i.idempresa,
 			(select if(count(precio)=0,0,sum(precio)) from detalle_venta where idventa = i.idventa ) as total,
 			(select sum(if(descuento=0,0,(precio*cantidad)*if(descuento>1,(descuento/100),descuento))) from detalle_venta where idventa = i.idventa ) as sdescuento,
 			(select if(count(precio)=0,0,sum(precio))*i.impuesto from detalle_venta where idventa = i.idventa ) as pimpuesto,
 			(select if(count(precio)=0,0,((sum(precio))*(1+i.impuesto))) from detalle_venta where idventa = i.idventa ) - (select sum(if(descuento=0,0,(precio*cantidad)*if(descuento>1,(descuento/100),descuento))) from detalle_venta where idventa = i.idventa )as grantotal, 
 			i.created_at,
-			e.nombreempresa, e.rfcempresa, e.direccionempresa, e.numext, e.numint, e.colonia, e.cpempresa, e.ciudadempresa, e.emailempresa, e.telempresa,
+			e.nombreempresa, e.rfcempresa, e.direccionempresa, e.numext, e.numint, e.colonia, e.cpempresa, e.ciudadempresa, e.emailempresa, e.telempresa, e.celempresa,
 			(select nombre from estados where estados.id=e.estado) as nestado,        
             (select nombre from municipios where municipios.id=e.ciudadempresa) as nciudad, 
             (select descripcion_reg from rfiscal where rfiscal.id=e.regfiscal) as nregfiscal

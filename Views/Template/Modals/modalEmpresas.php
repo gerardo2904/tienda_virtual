@@ -68,7 +68,12 @@
                             <input class="form-control" id="txtTelEmpresa" name="txtTelEmpresa" type="text" required="">
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Telefono Celular<span class="required"></span></label>
+                            <input class="form-control" id="txtCelEmpresa" name="txtCelEmpresa" type="text" required="">
+                        </div>
+
+                        <div class="form-group col-md-4">
                             <label class="control-label">Email<span class="required">*</span></label>
                             <input class="form-control" id="txtEmailEmpresa" name="txtEmailEmpresa" type="text" required="">
                         </div>

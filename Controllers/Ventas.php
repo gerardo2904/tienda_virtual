@@ -341,10 +341,14 @@
 					}
 					$pdf->MultiCell(0,5,utf8_decode($arrData['direccionempresa'].', No. '.$arrData['numext'].$nint.", ".$arrData['colonia'].". CP ".$arrData['cpempresa']),0,'C',false);
 					$pdf->MultiCell(0,5,utf8_decode($arrData['nciudad'].", ".$arrData['nestado']),0,'C',false);
-					$pdf->MultiCell(0,5,utf8_decode("Teléfono: ".$arrData['telempresa']),0,'C',false);
+					$pdf->MultiCell(0,5,utf8_decode("Telefonos. fijo: ".$arrData['telempresa']." \n celular: ".$arrData['celempresa']),0,'C',false);
 					$pdf->SetFont('Arial','BU',8);
 					$pdf->MultiCell(0,5,utf8_decode("Email: ".$arrData['emailempresa']),0,'C',false);
-
+					$pdf->SetFont('Arial','B',8);
+					$pdf->Ln(2);
+					$pdf->MultiCell(0,5,utf8_decode("Cliente: ".$arrData['nombre_cliente']." Tel:".$arrData['telcliente']),0,'C',false);
+					$pdf->Ln(1);
+					$pdf->MultiCell(0,5,utf8_decode("--------------------------------------------------"),0,'C',false);
 					$pdf->SetFont('Arial','B',6);
 					
 					//$pdf->SetLeftMargin(20);

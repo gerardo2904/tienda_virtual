@@ -265,6 +265,29 @@ function openModal(){
     document.querySelector('#titleModal').innerHTML = "Nuevo Proveedor";
     document.querySelector('#formProveedor').reset();
     $('#modalFormProveedor').modal('show');
+    fntEmailAle();
+    document.querySelector("#txtNombre").focus();
+}
+
+function fntEmailAle(){
+    let ajaxUrl = base_url+'Proveedores/getMailAle';
+    let request = (window.XMLHttpRequest) ? 
+                    new XMLHttpRequest() : 
+                    new ActiveXObject('Microsoft.XMLHTTP');
+        request.open("GET",ajaxUrl,true);
+        request.send();
+        request.onreadystatechange = function(){
+            if(request.readyState == 4 && request.status == 200){
+                let objP = JSON.parse(request.responseText);
+                if(objP.status)
+                { 
+                    document.querySelector("#txtEmail").value = objP.msg;
+                    document.querySelector("#txtNombre").focus();
+                    //$('#txtNombre').focus();
+                }
+
+            }
+        }
 }
 
 function fntObtieneRegimen(){
@@ -294,9 +317,35 @@ function fntObtieneCFDI(){
         requestRe.send();
         requestRe.onreadystatechange = function(){
             if(requestRe.readyState == 4 && requestRe.status == 200){
+                //document.querySelector('#listCFDI').innerHTML = requestRe.responseText;
+                //$('#listCFDI').selectpicker('render');  
+                document.querySelector('#listCFDI').innerHTML = '';
+                $('#listCFDI').selectpicker('destroy');
+
                 document.querySelector('#listCFDI').innerHTML = requestRe.responseText;
-                $('#listCFDI').selectpicker('render');  
+                $('#listCFDI').selectpicker('get');
             }
+        }
+    }
+}
+
+function fntCambioCFDI(){   
+    let ajaxUrl = base_url+'Clientes/getSelectCFDI/'+document.querySelector('#listRegimen').value;
+    let requestRe = (window.XMLHttpRequest) ? 
+                new XMLHttpRequest() : 
+                new ActiveXObject('Microsoft.XMLHTTP');
+    requestRe.open("GET",ajaxUrl,true);
+    requestRe.send();
+    requestRe.onreadystatechange = function(){
+        if(requestRe.readyState == 4 && requestRe.status == 200){
+            
+            document.querySelector('#listCFDI').innerHTML = '';
+            $('#listCFDI').selectpicker('destroy');
+
+            document.querySelector('#listCFDI').innerHTML = requestRe.responseText;
+            $('#listCFDI').selectpicker('get');
+            $('#listCFDI').selectpicker('render');  
+            
         }
     }
 }
@@ -328,9 +377,37 @@ function fntObtieneCiudad(){
         requestRe.send();
         requestRe.onreadystatechange = function(){
             if(requestRe.readyState == 4 && requestRe.status == 200){
+                //document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
+                //$('#listCiudad').selectpicker('render');  
+                document.querySelector('#listCiudad').innerHTML = '';
+                $('#listCiudad').selectpicker('destroy');
+
                 document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
+                $('#listCiudad').selectpicker('get');
                 $('#listCiudad').selectpicker('render');  
             }
         }
     }
+}
+
+function fntCambioCiudad(){   
+    let ajaxUrl = base_url+'Proveedores/getSelectCiudad/'+document.querySelector('#listEstado').value;
+    let requestRe = (window.XMLHttpRequest) ? 
+                new XMLHttpRequest() : 
+                new ActiveXObject('Microsoft.XMLHTTP');
+    requestRe.open("GET",ajaxUrl,true);
+    requestRe.send();
+    requestRe.onreadystatechange = function(){
+        if(requestRe.readyState == 4 && requestRe.status == 200){
+            
+            document.querySelector('#listCiudad').innerHTML = '';
+            $('#listCiudad').selectpicker('destroy');
+
+            document.querySelector('#listCiudad').innerHTML = requestRe.responseText;
+            $('#listCiudad').selectpicker('get');
+            $('#listCiudad').selectpicker('render');  
+            
+        }
+    }
+
 }

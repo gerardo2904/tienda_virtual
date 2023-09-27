@@ -7,6 +7,7 @@
 		private $strRfcEmpresa;
 		private $strDireccionEmpresa;
 		private $intTelEmpresa;
+		private $intCelEmpresa;
 		private $strEmailEmpresa;
 		private $intStatus;
 		private $strRuta;
@@ -28,7 +29,7 @@
 
 		public function selectEmpresas(){
             $sql = "SELECT e.idempresa, e.nombreempresa, e.rfcempresa, e.direccionempresa, e.ciudadempresa, 
-                e.cpempresa, e.telempresa, e.emailempresa, e.status, e.ciudadempresa, 
+                e.cpempresa, e.telempresa, e.celempresa, e.emailempresa, e.status, e.ciudadempresa, 
                 (select img from imagenempresa where empresaid = e.idempresa limit 1) as img,
 				(select nombre from municipios where municipios.id=e.ciudadempresa) as nciudad,
 				(select nombre from estados where estados.id=e.estado)as nestado,        
@@ -40,7 +41,7 @@
 		}	
 
         /*string $ruta, poner antes de status*/
-		public function insertEmpresa(string $nombre, string $rfc, string $direccion, int $tel, string $email, int $status, string $strNumExt, string $strNumInt, string $strColonia, string $strCP, int $intlistEstado, int $intlistCiudad, int $intlistRegimen){
+		public function insertEmpresa(string $nombre, string $rfc, string $direccion, int $tel, string $email, int $status, string $strNumExt, string $strNumInt, string $strColonia, string $strCP, int $intlistEstado, int $intlistCiudad, int $intlistRegimen, $cel){
 			
 			$this->strNombreEmpresa = $nombre;
 			$this->strRfcEmpresa = $rfc;
@@ -48,6 +49,7 @@
 			$this->intlistCiudad = $intlistCiudad;
 			$this->strCP = $strCP;
 			$this->intTelEmpresa = $tel;
+			$this->intCelEmpresa= $cel;
 			$this->strEmailEmpresa = $email;
 			$this->intStatus = $status;
 
@@ -65,8 +67,8 @@
 			if(empty($request))
 			{
                 /*ruta,  poner antes de status*/  /*,? poner al final de values*/
-				$query_insert  = "INSERT INTO empresas(nombreempresa, rfcempresa, direccionempresa, ciudadempresa, cpempresa, telempresa, emailempresa, status, numext, numint, colonia, estado, regfiscal) 
-								  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				$query_insert  = "INSERT INTO empresas(nombreempresa, rfcempresa, direccionempresa, ciudadempresa, cpempresa, telempresa, emailempresa, status, numext, numint, colonia, estado, regfiscal, celempresa) 
+								  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 //$this->strRuta, poner antes de intStatus
 	        	$arrData = array($this->strNombreEmpresa,
         						$this->strRfcEmpresa,
@@ -80,7 +82,8 @@
 								$this->strNumInt,
 								$this->strColonia,
 								$this->intlistEstado,
-								$this->intlistRegimen);
+								$this->intlistRegimen,
+								$this->intCelEmpresa);
                 //dep($query_insert);
                 //dep($arrData);
                 //die();
@@ -92,7 +95,7 @@
 	        return $return;
 		}
         // string $ruta, poner antes de status
-		public function updateEmpresa(int $idempresa, string $nombre, string $rfc, string $direccion, int $tel, string $email, int $status, string $strNumExt, string $strNumInt, string $strColonia, string $strCP, int $intlistEstado, int $intlistCiudad, int $intlistRegimen){			                                    																		
+		public function updateEmpresa(int $idempresa, string $nombre, string $rfc, string $direccion, int $tel, string $email, int $status, string $strNumExt, string $strNumInt, string $strColonia, string $strCP, int $intlistEstado, int $intlistCiudad, int $intlistRegimen, int $cel){			                                    																		
 			$this->intIdEmpresa = $idempresa;
 			$this->strNombreEmpresa = $nombre;
 			$this->strRfcEmpresa = $rfc;
@@ -100,6 +103,7 @@
 			$this->intlistCiudad = $intlistCiudad;
 			$this->strCP = $strCP;
 			$this->intTelEmpresa = $tel;
+			$this->intCelEmpresa = $cel;
 			$this->strEmailEmpresa = $email;
 			$this->intStatus = $status;
 			$this->strNumExt = $strNumExt;
@@ -128,7 +132,8 @@
 							numint=?,
 							colonia=?,
 							estado=?,
-							regfiscal=? 
+							regfiscal=?,
+							celempresa=? 
 						WHERE idempresa = $this->intIdEmpresa ";
                  // $this->strRuta,
 				$arrData = array($this->strNombreEmpresa,
@@ -143,7 +148,8 @@
 								$this->strNumInt,
 								$this->strColonia,
 								$this->intlistEstado,
-								$this->intlistRegimen);
+								$this->intlistRegimen,
+								$this->intCelEmpresa);
 
 	        	$request = $this->update($sql,$arrData);
 	        	$return = $request;
