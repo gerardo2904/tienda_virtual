@@ -142,7 +142,49 @@
         </div>
         <?php } ?>
 
-        <div class="col-md-6">
+        <!-- /* ventas en curso... */  -->
+        <?php if(!empty($_SESSION['permisos'][12]['r'])){ ?>
+      <div class="col-md-6">
+          <div class="tile">
+            <h3 class="tile-title">Ultimas ventas No finalizadas</h3>
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Comprobante</th>
+                  <th>Cliente</th>
+                  <th>Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                <?php
+                  if(count($data['ultimasVentasNF']) > 0){
+                    foreach($data['ultimasVentasNF'] as $ventaNF){
+                ?>
+
+                <tr>
+                  <td><?= $ventaNF['comprobante'] ?></td>
+                  <td><?= $ventaNF['nombre_cliente'] ?></td>
+                  <td><?= SMONEY." ".$ventaNF['grantotal'] ?></td>
+                  <td><a href="<?= base_url() ?>/Ventas/ticket/<?= $ventaNF['idventa'] ?>" Target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                </tr>
+                
+                <?php } 
+                }
+                ?>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <?php } ?>
+        <!-- /* Fin ventas en curso */ -->
+
+      </div>
+      
+      <div class="row">
+      <div class="col-md-12">
           <div class="tile">
             <div class="container-title">
               <h3 class="tile-title">Categorias por mes y año</h3>
@@ -155,7 +197,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="row">
         <div class="col-md-12">
           <div class="tile">

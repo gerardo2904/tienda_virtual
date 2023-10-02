@@ -60,7 +60,7 @@
 			$this->intlistRegimen = $intlistRegimen;
 
 			$return = 0;
-			$sql = "SELECT * FROM empresas WHERE (rfcempresa = trim('{$this->strRfcEmpresa}') OR trim(nombreempresa = '{$this->strNombreEmpresa}') AND status != 0)";
+			$sql = "SELECT * FROM empresas WHERE (/* rfcempresa = trim('{$this->strRfcEmpresa}') OR*/ trim(nombreempresa = '{$this->strNombreEmpresa}') AND status != 0)";
 			$request = $this->select_all($sql);
 			
 			//dep($request);die();
@@ -114,7 +114,7 @@
 
 
 			$return = 0;
-			$sql = "SELECT * FROM empresas WHERE (rfcempresa = '{$this->strRfcEmpresa}' OR nombreempresa = '{$this->strNombreEmpresa}' ) AND idempresa != $this->intIdEmpresa";
+			$sql = "SELECT * FROM empresas WHERE (/*rfcempresa = '{$this->strRfcEmpresa}' OR */nombreempresa = '{$this->strNombreEmpresa}' ) AND idempresa != $this->intIdEmpresa";
 			$request = $this->select_all($sql);
 			if(empty($request))
 			{

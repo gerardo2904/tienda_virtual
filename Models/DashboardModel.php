@@ -91,6 +91,28 @@
 			return $request;
         }
 
+        public function ultimasVentasNF(){
+            $intEmpresa = intval($_SESSION['userData']['idempresa']);
+			
+			$sql="select v.idventa, v.idcliente, v.idpersona, v.comprobante, v.notas, v.status, v.impuesto,
+			concat(p.nombres,' ',p.apellidos) as nombre_cliente,
+			sum(if(precio=0,0,if(cantidad=0,0,precio*cantidad))) as total,
+			sum(if(descuento=0,0,(precio*cantidad)*if(descuento>1,(descuento/100),descuento) )) as sdescuento,
+			sum(if(v.impuesto=0,0,(precio*cantidad)*v.impuesto)) as pimpuesto,
+			round(sum(if(precio=0,0,(precio*cantidad)+((precio*cantidad)*v.impuesto)-((precio*cantidad)*if(descuento>1,(descuento/100),descuento) )) ),2) as grantotal,
+            v.created_at
+	 		from venta v
+			LEFT JOIN detalle_venta dv 
+			ON v.idventa = dv.idventa
+			INNER JOIN persona p 
+			ON v.idcliente = p.idpersona
+			where v.status = 1 AND v.idempresa= $intEmpresa 
+			GROUP by idventa order by created_at DESC LIMIT 10";	
+	  
+			$request = $this->select_all($sql);
+			return $request;
+        }
+
         public function selectCategoMes(int $anio, int $mes){
             $intEmpresa = intval($_SESSION['userData']['idempresa']);
             $sql="select  c.nombre, c.idcategoria as catego, sum(dv.cantidad) as pcant,

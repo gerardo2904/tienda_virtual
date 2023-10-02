@@ -611,6 +611,8 @@
 
 		public function getMaxComprobante(){
 			//Obtiene el siguiente comprobante para usar en una venta.
+
+			$intEmpresa = intval($_SESSION['userData']['idempresa']);
 			
 			$ComprobanteMax="";
 			$arrData = $this->model->getComprobanteMax();
@@ -628,7 +630,7 @@
 
 			$Max = $arrData[idventa]+1;
 			
-			$ComprobanteMax = $Comprobante."-".$hoy."-".$Max;
+			$ComprobanteMax = $Comprobante.$intEmpresa."-".$hoy."-".$Max;
 
 			//dep($ComprobanteMax);die();
 

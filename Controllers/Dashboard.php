@@ -29,6 +29,7 @@
             $data['ingresos'] = $this->model->cantIngresos();
             $data['ventas'] = $this->model->cantVentas();
             $data['ultimasVentas'] = $this->model->ultimasVentas();
+            $data['ultimasVentasNF'] = $this->model->ultimasVentasNF();
             
 
             $anio = date('Y');
