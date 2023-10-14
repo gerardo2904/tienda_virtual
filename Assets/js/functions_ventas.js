@@ -8,6 +8,8 @@ $(document).on('focusin', function(e) {
     }
 });
 
+
+
 document.addEventListener('DOMContentLoaded', function(){
 
     tableVentas = $('#tableVentas').dataTable( {
@@ -78,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function(){
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
     });
 
+    
      
 },false);
 
@@ -106,8 +109,10 @@ window.addEventListener('load', function(){
    $('#modalAltaCliente').on('hidden.bs.modal', function (event) {
     //alert("si");
     fntClientes2();
-  })
+    
+  });
 
+  
        
     if(document.querySelector("#formVentas")){
         let formVentas = document.querySelector('#formVentas');
@@ -355,6 +360,7 @@ window.addEventListener('load', function(){
         }
     }
 
+    // Procesar si hay un cliente nuevo...
     if(document.querySelector("#formCliente")){
         let formCliente = document.querySelector('#formCliente');
         formCliente.onsubmit = function(e){
@@ -423,17 +429,78 @@ window.addEventListener('load', function(){
 
         }
     }
-    
-    fntClientes2();
-    
-    fntProductosV();
+    // Fin de procesamiento de cliente nuevo...
 
+    // Agregar un abono...
+    if(document.querySelector("#formAbono")){
+        let formAbono = document.querySelector('#formAbono');
+        formAbono.onsubmit = function(e){
+            e.preventDefault();
 
+            document.formAbono.querySelector('#idVentaA').value = document.querySelector('#idVenta').value;
+            let idVenta = document.querySelector('#idVentaA').value;
+                
+            let fecha = new Date().toLocaleDateString();
+            let abono = 0;
+
+            //alert("idventa= "+idVenta+" fecha= "+fecha+" abono= "+abono);
+                //document.formAbono.querySelector('#txtFecha').value = fecha;
+                //document.formAbono.querySelector('#txtAbono').value = abono;
+            //document.querySelector('#txtFecha').value = fecha;
+            //document.querySelector('#txtAbono').value = abono;
+
+            fecha = document.formAbono.querySelector('#txtFecha').value;
+            abono = document.formAbono.querySelector('#txtAbono').value;
+
+            //alert("idventa= "+idVenta+" fecha= "+fecha+" abono= "+abono);
+
+            if(idVenta == '' || fecha == '' ||  abono == '' ){
+                swal("Atención","Todos los campos son obligatorios.","error");
+                return false;
+            }
+
+            let elementsValid = document.getElementsByClassName("valid");
+            for (let i = 0 ; i < elementsValid.length; i++){
+                if (elementsValid[i].classList.contains('is-invalid')){
+                    swal("Atención", "Por favor verifique los campos en rojo.", "error");
+                    return false;
+                }
+            }
+            divLoading.style.display = "flex";
+
+            let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+            let ajaxUrl = base_url+'Ventas/setAbono';
+            let formData = new FormData(formAbono);
+            request.open('POST',ajaxUrl, true);
+            request.send(formData);
+
+            request.onreadystatechange = function(){
+                if(request.readyState == 4 && request.status == 200){
+                    let objData = JSON.parse(request.responseText);
+                    if(objData.status){ 
+                        $('#modalAltaAbono').modal("hide");
+                        formAbono.reset();
+                        //swal("Clientes", objData.msg, "success");
+                        verAbonos(idVenta);
+                        $('#modalFormVentas').modal('handleUpdate');
+                    }else{
+                        swal("Error", objData.msg, "error");
+                    }
+                }
+                divLoading.style.display = "none";
+                return false;
+            }
+
+        }
+    }
+    // Fin de agregar abono...
+    
+        fntClientes2();
+        fntProductosV();
         fntObtieneRegimen();
         fntObtieneCFDI();
         fntObtieneEstado();
         fntObtieneCiudad();
-    
 },false);
 
 function fntClientes(){
@@ -755,7 +822,6 @@ function obtener_tabla(ven, impp){
 }
 
 function fntEditInfo(element, venta){     
-    
     // Esta variable rowTable, tome todo el valor de la fila de la tabla.  
     rowTable = element.parentNode.parentNode.parentNode;
     //rowTable.cells[1].textContent
@@ -780,7 +846,7 @@ function fntEditInfo(element, venta){
             //console.log(objData);
             if(objData.status){
                 //fntClientes2();
-
+                
                 document.querySelector('#FrmProductos').classList.remove("notBlock");
                 document.querySelector('#tableProductos').classList.remove("notBlock");
                 
@@ -799,22 +865,6 @@ function fntEditInfo(element, venta){
                 $('#listStatus').selectpicker('render');
 
                 let arreglo = objData.data.productos;
-                
-
-                
-                //console.log(arreglo);
-                /*
-                $('#tableProductos').DataTable({
-                    ajax: arreglo,
-                    columns: [
-                        { data: 'nombre' },
-                        { data: 'cantidad' },
-                        { data: 'precioc' },
-                        { data: 'etiqueta' },
-                    ],
-                });
-            */
-                //let htmlProds = '<table id="tablita" class="table table-bordered"><tbody><th style="text-align: center">Acción</th><th style="text-align: center">Producto</th><th style="text-align: center">Imagen</th><th style="text-align: center">Cantidad</th><th style="text-align: center">Precio Unitario</th><th style="text-align: center">Total</th>   ';
                 let htmlProds = '<table id="tablita" class="table table-bordered"><tbody><th class="col-md-1" style="text-align: center">Acción</th><th class="col-md-2" style="text-align: center">Producto</th><th class="col-md-1" style="text-align: center">Imagen</th><th class="col-md-1" style="text-align: center">Cantidad</th><th class="col-md-2" style="text-align: center">Costo</th><th class="col-md-1" style="text-align: center">% desc</th><th class="col-md-2" style="text-align: center">Descuento</th><th class="col-md-2" style="text-align: center">Total</th>   ';
                 let suma = parseFloat(0.0);
                 let imp = parseFloat(0.0);
@@ -924,10 +974,14 @@ function fntEditInfo(element, venta){
                 
                 
             }
+            // Carga los abonos de la venta...
+            verAbonos(idventa);
         }
         $('#modalFormVentas').modal('show');
         
+        
     }
+    
 }
 
 function fntBorrarDetalleVenta(idDetalleVenta){
@@ -1063,6 +1117,7 @@ function actualiza_impuesto(arreglo, impuesto){
 function openModal(){
     rowTable = "";
     document.querySelector('#idVenta').value="";
+    //verAbonos('');
     document.querySelector('.modal-header').classList.replace("headerUpdate", "HeaderRegister");
     document.querySelector('#btnActionForm').classList.replace("btn-info", "btn-primary");
     document.querySelector('#btnText').innerHTML = "Guardar";
@@ -1209,13 +1264,7 @@ function fntEmailAle(){
             }
         }
 }
-
-function nuevoCliente(){
-    document.querySelector('.modal-header').classList.replace("headerRegister","header-primary");
-    $('#modalAltaCliente').modal('show');
-    fntEmailAle();
-}
-
+/*
 function fntEmailAle(){
     let ajaxUrl = base_url+'Clientes/getMailAle';
     let request = (window.XMLHttpRequest) ? 
@@ -1235,6 +1284,18 @@ function fntEmailAle(){
 
             }
         }
+}
+*/
+
+function nuevoCliente(){
+    document.querySelector('.modal-header').classList.replace("headerRegister","header-primary");
+    $('#modalAltaCliente').modal('show');
+    fntEmailAle();
+}
+
+function nuevoAbono(){
+    document.querySelector('.modal-header').classList.replace("headerRegister","header-primary");
+    $('#modalAltaAbono').modal('show');
 }
 
 function cambia2(a, b, c, d, e, iddet){
@@ -1468,4 +1529,106 @@ function fntObtieneCiudad(){
         }
     }
 }
+
+function verAbonos(idventa){
+    //let ajaxUrl = base_url+'Ventas/getAbonos/'+document.querySelector('#idVenta').value;
+    let tabonos = 0;
+    let ajaxUrl = base_url+'Ventas/getAbonos/'+idventa;
+        let requestA = (window.XMLHttpRequest) ? 
+                    new XMLHttpRequest() : 
+                    new ActiveXObject('Microsoft.XMLHTTP');
+        requestA.open("GET",ajaxUrl,true);
+        requestA.send();
+        requestA.onreadystatechange = function(){
+            if(requestA.readyState == 4 && requestA.status == 200){
+                
+                let objDataA = JSON.parse(requestA.responseText);
+                let arreglo = objDataA;
+                //console.log(objDataA);
+               //console.log(arreglo);
+               //$("#tabla_abonos").remove();
+               document.querySelector("#tabla_abonos").innerHTML = '';
+
+               let htmlAbonos = '<table id="tabla_abonos" class="table table-bordered"><tbody><th class="col-md-1" style="text-align: center">Fecha</th><th class="col-md-2" style="text-align: center">Abono</th><th class="col-md-1" style="text-align: center">Acción</th>';
+                if(arreglo.length > 0){
+                    let objAbonos = arreglo;
+                    //console.log(objAbonos);
+                    for (let p = 0; p < objAbonos.length; p++) {
+                        let idVenta = objAbonos[p].idventa;
+                        tabonos = objAbonos[p].suma;
+                        //console.log(objAbonos[p].abono);
+                        htmlAbonos +=`<tr class="odd" role="row">
+                            <td id="fechaa${p}" align="center">${objAbonos[p].fechaabono}</td>
+                            <td id="abonoa${p}" align="right">${objAbonos[p].abono}</td>
+                            <td><div class="text-center"><button class="btn btn-danger btn-sm" type="button" onClick="fntBorrarAbono(${objAbonos[p].idabono});"><i class="far fa-trash-alt"></i></button></div></td>
+                            </tr>`;
+                    }
+                    //console.log(htmlAbonos);exit;
+                }
+                htmlAbonos=htmlAbonos+'<tr><td class="col-md-1" style="text-align: center">Total Abonos:</td><td style="text-align: right">'+tabonos+'</td><td></td></tr></tbody></table>';
+                document.querySelector("#tabla_abonos").innerHTML = htmlAbonos;
+
+                
+            }
+        }
+}
+
+function fntBorrarAbono(idAbono){
+    let abono = idAbono;
+    //let ven = document.querySelector('#idVenta').value;
+    
+    let request = (window.XMLHttpRequest) ? new XMLHttpRequest():new ActiveXObject('Microsoft.XMLHTTP');
+    let ajaxUrl = base_url+'Ventas/delAbono/'+abono;
+    request.open("POST",ajaxUrl,true);
+    //request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    request.send();
+    request.onreadystatechange = function(){
+        if(request.readyState == 4 && request.status == 200){
+            let objData = JSON.parse(request.responseText);
+            verAbonos(document.querySelector("#idVenta").value);
+            /*if(objData.status){
+                swal("Eliminar",objData.msg,"success");
+                tableIngresos.api().ajax.reload();
+            }else{
+                swal("Atención",objData.msg,"error");
+            }*/
+            //obtener_tabla(ven, impp);
+            //fntObtieneStock();
+        }
+    }
+
+}
+
+function modiPicker(){
+    //var fecha = document.formAbono.querySelector('#txtFecha');
+    let fecha = document.getElementById('txtFecha');
+    //fecha.style.cssText = '.ui-datepicker-calendar{display: flex;}';
+    fecha.classList.remove('ui-datepicker-calendar');
+}
+
+$('.date-picker').datepicker( {
+    closeText: 'Cerrar',
+	prevText: '<Ant',
+	nextText: 'Sig>',
+	currentText: 'Hoy',
+	monthNames: ['1 -', '2 -', '3 -', '4 -', '5 -', '6 -', '7 -', '8 -', '9 -', '10 -', '11 -', '12 -'],
+	monthNamesShort: ['Enero','Febrero','Marzo','Abril', 'Mayo','Junio','Julio','Agosto','Septiembre', 'Octubre','Noviembre','Diciembre'],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié;', 'Juv', 'Vie', 'Sáb'],
+    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+    eekHeader: 'Sm',
+    firstDay: 1,
+    changeMonth: true,
+    changeYear: true,
+    showButtonPanel: true,
+    dateFormat: 'dd/mm/yy',
+    isRTL: false,
+    showDays: true,
+    showWeekDays: true,
+    todayHighlight: true,
+    onClose: function(dateText, inst) {
+        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay));
+    }
+});
+
 

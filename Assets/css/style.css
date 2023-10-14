@@ -226,12 +226,14 @@
 	margin-right: 5px;
 }
 
+/* datepicker */
 .dflex{
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 }
-
+/*
 .ui-datepicker-calendar{
 	display: none;
 }
+*/

@@ -272,6 +272,39 @@
 			die();
 		}
 
+		public function setAbono(){
+            //dep($_POST);die();
+
+			if($_POST){
+				if(empty($_POST['txtFecha']) || empty($_POST['txtAbono']) || empty($_POST['idVentaA'])  || intval($_SESSION['userData']['idempresa']) == 0)
+				{
+					$arrResponse = array("status" => false, "msg" => 'Datos incorrectos.');
+				}else{
+					
+					$idVenta = intval($_POST['idVentaA']);
+                    $fecha = $_POST['txtFecha'];
+                    $abono = $_POST['txtAbono'];
+					
+					$request_abono = "";
+					
+					if($_SESSION['permisosMod']['w']){
+						$request_abono = $this->model->insertAbono(intval($idVenta), 
+																	$fecha, 
+																	$abono);
+					}
+					
+					if($request_abono > 0 )
+					{
+						$arrResponse = array('status' => true, 'idventa' => $request_abono, 'msg' => 'Datos guardados correctamente.');
+					}else {
+						$arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
+					}
+				}
+				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+			}
+			die();
+		}
+
 		public function ticket($idventa){
 			if($_SESSION['permisosMod']['r']){
 				$idventa = intval($idventa);
@@ -644,6 +677,40 @@
 			//return $CodigoMax;
 			die();
 		}
+
+		public function getAbonos(int $idventa)
+		{
+			if($_SESSION['permisosMod']['r']){
+				$arrData = $this->model->selectAbonosVentas($idventa);
+				for ($i=0; $i < count($arrData); $i++) {
+					$btnDelete = '';
+                    //$btnDelete = '<button class="btn btn-danger" type="button" onClick="fntDelAbonoVenta('.$arrData[$i]['idventa'].')" title="Borrar abono"><i class="far fa-trash-alt"></i></button>';
+					//$arrData[$i]['Acción'] = '<div class="text-center">'.$btnDelete.'</div>';
+					$arrData[$i]['accion'] = '';
+                    $arrData[$i]['abono'] = SMONEY.' '.formatMoney($arrData[$i]['abono']);
+					$arrData[$i]['fechaabono'] = date('d/m/Y',strtotime($arrData[$i]['fechaabono']));	
+					$arrData[$i]['suma'] = SMONEY.' '.formatMoney($arrData[$i]['suma']);
+					//$tomorrow = date('d/m/Y' , strtotime($fecha));
+				}//dep($arrData);exit;
+				echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+			}
+			die();
+		}
+
+		public function delAbono($idabono){
+            if($_SESSION['permisosMod']['d']){
+                $intIdAbono = intval($idabono);
+                $requestDelete = $this->model->deleteAbono($intIdAbono);
+                if($requestDelete)
+                {
+                    $arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el abono');
+                }else{
+                    $arrResponse = array('status' => false, 'msg' => 'Error al eliminar el abono.');
+                }
+                echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+            }
+        }
+
 
 		
 

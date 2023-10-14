@@ -226,10 +226,6 @@
         }
 
         public function selectCiudad($estado){
-            /*$sql = "SELECT id, nombre, edo
-                    FROM municipios 
-                    order by id ASC";
-                    */
                     if($estado>0){
                         $sql = "SELECT id, nombre, edo FROM `municipios` WHERE edo=".$estado;
                     }else{
