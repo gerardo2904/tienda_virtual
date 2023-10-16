@@ -16,6 +16,9 @@
         private $intPrecio;
 		private $intEmpresa;
 		private $intDescuento;
+
+		private $strFecha;
+		private $strAbono;
         //private $strEtiqueta;
 
 		public function __construct()
@@ -141,6 +144,53 @@
 			}
 	        return $return;
 		}
+
+		public function insertAbono(int $idVenta, string $fecha, string $abono){
+			$return = 0;
+			$this->intIdVenta = $idVenta;
+			$this->strFecha = substr($fecha,6,4).'-'.substr($fecha,3,2).'-'.substr($fecha,0,2);
+			$fecha2 = date($this->strFecha );
+			$this->strAbono = $abono;
+
+			// Calcula el total de los abonos
+			$sql = "SELECT sum(abono) as sumaAbonos from abonos_ventas where idventa=".$idVenta;
+			$requestSuma = $this->select($sql);
+			$validaAbonos = $requestSuma['sumaAbonos']+$abono;
+			// Fin del calculo de los abonos
+
+			// Obtiene el grantotal de la venta para validar si aplica el abono
+			$sql = "SELECT i.idventa, i.impuesto,
+			(select if(count(precio)=0,0,sum(precio)) from detalle_venta where idventa = i.idventa ) as total,
+			(select sum(if(descuento=0,0,(precio*cantidad)*if(descuento>1,(descuento/100),descuento))) from detalle_venta where idventa = i.idventa ) as sdescuento,
+			(select if(count(precio)=0,0,sum(precio))*i.impuesto from detalle_venta where idventa = i.idventa ) as pimpuesto,
+			(select if(count(precio)=0,0,((sum(precio))*(1+i.impuesto))) from detalle_venta where idventa = i.idventa ) - (select sum(if(descuento=0,0,(precio*cantidad)*if(descuento>1,(descuento/100),descuento))) from detalle_venta where idventa = i.idventa )as grantotal 
+			FROM venta i 
+			WHERE i.idventa = ".$idVenta;
+			$requestGrantotal = $this->select($sql);
+			$validaGrantotal = $requestGrantotal['grantotal'];
+			// Fin de la obtencion del grantotal de la venta
+
+			if($validaAbonos > $validaGrantotal){
+				return $return;
+			}
+			
+			
+			$query_insert  = "INSERT INTO abonos_ventas(idventa, fechaabono, abono) 
+							  VALUES(?,?,?)";
+	        $arrData = array($this->intIdVenta,
+							$fecha2,
+        					$this->strAbono);
+                //dep($query_insert);
+                //dep($arrData);
+                //die();
+
+				
+	        	$request_insert = $this->insert($query_insert,$arrData);
+	        	$return = $request_insert;
+			
+	        return $return;
+		}
+
 
 		public function addProducto(int $idproducto, 
 									int $codigo, 
@@ -428,6 +478,20 @@
             $request = $this->select($sql);
             $nempresa = $request['nombre'];
             return $nempresa;
+        }
+
+		public function selectAbonosVentas(int $idventa){
+            $sql = "SELECT idabono, idventa, abono, fechaabono, 
+			               (select sum(abono) from abonos_ventas where idventa=".$idventa.") as suma 
+						   FROM abonos_ventas where idventa=".$idventa;
+			$request = $this->select_all($sql);
+			return $request;
+        }
+
+		public function deleteAbono(int $idabono){
+			$sql = "DELETE FROM abonos_ventas WHERE idabono= $idabono";
+			$request_delete = $this->delete($sql);
+	        return $request_delete;
         }
 
 

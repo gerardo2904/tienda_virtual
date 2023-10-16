@@ -402,6 +402,7 @@ window.addEventListener('load', function(){
                 if(request.readyState == 4 && request.status == 200){
                     let objData = JSON.parse(request.responseText);
                     if(objData.status){
+                        //console.log(request);
                        /* 
                         const $select = document.querySelector("#listCliente");
 
@@ -412,12 +413,14 @@ window.addEventListener('load', function(){
                         
                         //location.reload();
 
-        
-
-                        
                         $('#modalAltaCliente').modal("hide");
                         formCliente.reset();
                         //swal("Clientes", objData.msg, "success");
+
+                        //Revisar cliente 
+                        //document.querySelector('#listCliente').value = 148;
+                        //$('#listCliente').selectpicker('render');
+
                     }else{
                         swal("Error", objData.msg, "error");
                     }
@@ -442,12 +445,6 @@ window.addEventListener('load', function(){
                 
             let fecha = new Date().toLocaleDateString();
             let abono = 0;
-
-            //alert("idventa= "+idVenta+" fecha= "+fecha+" abono= "+abono);
-                //document.formAbono.querySelector('#txtFecha').value = fecha;
-                //document.formAbono.querySelector('#txtAbono').value = abono;
-            //document.querySelector('#txtFecha').value = fecha;
-            //document.querySelector('#txtAbono').value = abono;
 
             fecha = document.formAbono.querySelector('#txtFecha').value;
             abono = document.formAbono.querySelector('#txtAbono').value;
@@ -1117,7 +1114,6 @@ function actualiza_impuesto(arreglo, impuesto){
 function openModal(){
     rowTable = "";
     document.querySelector('#idVenta').value="";
-    //verAbonos('');
     document.querySelector('.modal-header').classList.replace("headerUpdate", "HeaderRegister");
     document.querySelector('#btnActionForm').classList.replace("btn-info", "btn-primary");
     document.querySelector('#btnText').innerHTML = "Guardar";
@@ -1128,6 +1124,7 @@ function openModal(){
     $('#modalFormVentas').modal('show');
     if(document.querySelector('#idVenta').value == 0){
         fntComprobanteMax();
+        initAbonos();
     }
 }
 
@@ -1530,9 +1527,18 @@ function fntObtieneCiudad(){
     }
 }
 
+function initAbonos(){
+    document.querySelector("#tabla_abonos").innerHTML = '';
+    let htmlAbonos = '<table id="tabla_abonos" class="table table-bordered"><tbody><th class="col-md-1" style="text-align: center">Fecha</th><th class="col-md-2" style="text-align: center">Abono</th><th class="col-md-1" style="text-align: center">Acción</th>';
+    htmlAbonos=htmlAbonos+'<tr><td class="col-md-1" style="text-align: center">Total Abonos:</td><td style="text-align: right">0</td><td></td></tr></tbody></table>';
+    document.querySelector("#tabla_abonos").innerHTML = htmlAbonos;
+}
+
+
 function verAbonos(idventa){
     //let ajaxUrl = base_url+'Ventas/getAbonos/'+document.querySelector('#idVenta').value;
     let tabonos = 0;
+    let nabonos = 0;
     let ajaxUrl = base_url+'Ventas/getAbonos/'+idventa;
         let requestA = (window.XMLHttpRequest) ? 
                     new XMLHttpRequest() : 
@@ -1565,10 +1571,21 @@ function verAbonos(idventa){
                     }
                     //console.log(htmlAbonos);exit;
                 }
-                htmlAbonos=htmlAbonos+'<tr><td class="col-md-1" style="text-align: center">Total Abonos:</td><td style="text-align: right">'+tabonos+'</td><td></td></tr></tbody></table>';
-                document.querySelector("#tabla_abonos").innerHTML = htmlAbonos;
+                if(tabonos != 0){
+                    nabonos=tabonos;
+                    nabonos=tabonos.replace('MXN','');
+                    nabonos=nabonos.replace(',','');
+                }
+                //alert("Abonos: "+nabonos);
 
-                
+                if(parseFloat(nabonos) == parseFloat(document.getElementById('txtTotal').value) || parseFloat(nabonos) == 0){
+                    document.getElementById('btnFinaliza').disabled = false;
+                }else{
+                    document.getElementById('btnFinaliza').disabled = true;
+                }
+
+                htmlAbonos=htmlAbonos+'<tr><td class="col-md-1" style="text-align: center">Total Abonos:</td><td style="text-align: right">'+tabonos+'</td><td></td></tr></tbody></table>';
+                document.querySelector("#tabla_abonos").innerHTML = htmlAbonos; 
             }
         }
 }
@@ -1586,25 +1603,12 @@ function fntBorrarAbono(idAbono){
         if(request.readyState == 4 && request.status == 200){
             let objData = JSON.parse(request.responseText);
             verAbonos(document.querySelector("#idVenta").value);
-            /*if(objData.status){
-                swal("Eliminar",objData.msg,"success");
-                tableIngresos.api().ajax.reload();
-            }else{
-                swal("Atención",objData.msg,"error");
-            }*/
-            //obtener_tabla(ven, impp);
-            //fntObtieneStock();
         }
     }
 
 }
 
-function modiPicker(){
-    //var fecha = document.formAbono.querySelector('#txtFecha');
-    let fecha = document.getElementById('txtFecha');
-    //fecha.style.cssText = '.ui-datepicker-calendar{display: flex;}';
-    fecha.classList.remove('ui-datepicker-calendar');
-}
+
 
 $('.date-picker').datepicker( {
     closeText: 'Cerrar',

@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="modalFormVentas" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="modalFormVentas" tabindex="-1" role="dialog" aria-hidden="true" style="overflow-y: scroll;">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header headerRegister">
@@ -49,8 +49,80 @@
                         <label class="control-label">Notas </label>
                         <textarea class="form-control" id="txtNotas" name="txtNotas"></textarea>
                     </div>
+
+                    <!- Anticipo y abonos... ->
+                    <!--
+                    <div class="form-group col-md-4">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Anticipo <span class="required"> </span></label>
+                                <input class="form-control" id="txtAnticipo" name="txtAnticipo" type="text" value="0.00" readonly>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Fecha Anticipo <span class="required"> </span></label>
+                                <input class="form-control" id="txtFechaAnticipo" name="txtFechaAnticipo" type="text" value="0.00" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Abono 1 <span class="required"> </span></label>
+                                <input class="form-control" id="txtAbono1" name="txtAbono1" type="text" value="0.00" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Fecha Abono 1 <span class="required"> </span></label>
+                                <input class="form-control" id="txtFechaAbono1" name="txtFechaAbono1" type="text" value="0.00" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Abono 2 <span class="required"> </span></label>
+                                <input class="form-control" id="txtAbono2" name="txtAbono2" type="text" value="0.00" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Fecha Abono 2 <span class="required"> </span></label>
+                                <input class="form-control" id="txtFechaAbono2" name="txtFechaAbono2" type="text" value="0.00" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Abono 3 <span class="required"> </span></label>
+                                <input class="form-control" id="txtAbono3" name="txtAbono3" type="text" value="0.00" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Fecha Abono 3 <span class="required"> </span></label>
+                                <input class="form-control" id="txtFechaAbono3" name="txtFechaAbono3" type="text" value="0.00" readonly>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!- Fin Anticipo y abonos... ->
+                    
                      
                     <div class="form-group col-md-4">
+                        <!- tabla de abonos  ->
+                        <div class="row">
+                        <label class="control-label">Abonos <span class="required"></span></label> <button id="btnAltaAbono" class="btn btn-lnk text-primary" type="button" onclick="nuevoAbono();">+ Agregar</button>
+                            <table id="tabla_abonos" class="table table-bordered">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Abono</th>
+                                    <th>Acción</th>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                
+                            </table>
+
+                        </div>
+                        <!- Fin tabla de abonos  ->
+                        
+                        
                         <div id="lista_estado" class="notBlock">
                         <label for="listStatus">Estado <span class="required">*</span></label>
                         <select class="form-control selectpicker" id="listStatus" name="listStatus" required="" onchange="fntAlertaInventario();">
@@ -306,6 +378,51 @@
 
             <div class="tile-footer">
                 <button id="btnActionForm" class="btn btn-primary" type="submit">
+                    <i class="fa fa-fw fa-lg fa-check-circle"></i><span id="btnText">Guardar</span></button>&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" type="button"  data-dismiss="modal">
+                    <i class="fa fa-fw fa-lg fa-times-circle"></i>Cerrar</button>
+            </div>
+            </form>
+        </div>  
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal abonos-->
+<div class="modal fade" id="modalAltaAbono" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header headerIngreso">
+        <h5 class="modal-title" id="titleModal">Nuevo abono</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <form id="formAbono" name="formAbono" class="form-horizontal">
+            <input type="hidden" id="idVentaA" name="idVentaA" value="">
+            <p class="text-primary">Los campos con asterisco (<span class="required">*</span>) son obligatorios.</p>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="txtFecha">Fecha <span class="required">*</span> </label>
+                    <div class="dflex">
+                        <input type="text" class="form-control date-picker"  id="txtFecha" name="txtFecha" required="" value="<?php echo date("d/m/Y");?>">
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="txtAbono">Abono <span class="required">*</span> </label>
+                    <input type="text" class="form-control valid validNumber" id="txtAbono" name="txtAbono" required="" onkeypress="return controlTag(event);">
+                </div>
+                
+            </div>
+            
+            <HR>
+           
+
+            <div class="tile-footer">
+                <button id="btnActionFormA" class="btn btn-primary" type="submit">
                     <i class="fa fa-fw fa-lg fa-check-circle"></i><span id="btnText">Guardar</span></button>&nbsp;&nbsp;&nbsp;
                 <button class="btn btn-danger" type="button"  data-dismiss="modal">
                     <i class="fa fa-fw fa-lg fa-times-circle"></i>Cerrar</button>

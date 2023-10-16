@@ -297,7 +297,7 @@
 					{
 						$arrResponse = array('status' => true, 'idventa' => $request_abono, 'msg' => 'Datos guardados correctamente.');
 					}else {
-						$arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
+						$arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos porque el total de abonos supera el total de la venta.');
 					}
 				}
 				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
@@ -315,6 +315,8 @@
 					}else{
 						$arrProds = $this->model->selectProductos($idventa);
 						$arrData['productos'] = $arrProds;
+						$arrAbonos = $this->model->selectAbonosVentas($idventa);
+						$arrData['abonos'] = $arrAbonos;
 						$arrResponse = array('status' => true, 'data' => $arrData);
 					}
 					//dep($arrData);die();
@@ -491,21 +493,49 @@
 
 					//$pdf->Output("F","Ticket_Nro_1.pdf",true);
 					//$pdf->AutoPrint();
+					
+					if(strlen($arrData['notas'])>0){
+						$notas=$arrData['notas'];
+						$reemplazar= array("<p>","</p>");
+						$nuevacad= array("","");
+						$notas=str_replace($reemplazar,$nuevacad,$arrData['notas']);
+						$pdf->Ln(8);
+						$pdf->MultiCell(0,5,utf8_decode("NOTA: \n".$notas),0,'C',false);						
+					}
+
+					//Abonos...
+					$totalAbonos = count($arrAbonos);
+
+					if($totalAbonos>0){
+						$pdf->SetLeftMargin(0);
+							$pdf->Ln(5);
+							$pdf->SetFont('Arial','B',11);
+							$pdf->Cell(32,3,"Abonos realizados.",0,0,L);
+							$pdf->Ln(3);
+							$pdf->SetLeftMargin(4);
+							$pdf->Ln(1);
+						for ($i=0; $i < count($arrAbonos); $i++) {
+							$pdf->SetLeftMargin(1);
+							$pdf->Ln(1);
+							$pdf->SetFont('Arial','',8);
+							$pdf->Multicell(55,4,"Fecha: ".date("d/M/Y",strtotime($arrAbonos[$i]['fechaabono']))." Cantidad: ".number_format($arrAbonos[$i]['abono'],2),0,'L');
+						}
+						$pdf->SetFont('Arial','B',8);
+						$pdf->Ln(1);
+						$pdf->Multicell(55,4,"Cantidad total de abonos:     ".number_format($arrAbonos[0]['suma'],2),0,'L');
+						$faltante = $total - $arrAbonos[0]['suma'];
+						$pdf->Multicell(55,4,"Cantidad pendiente:            ".number_format($faltante,2),0,'L');
+					}
+					$pdf->SetLeftMargin(4);
+					
+					//Fin de abonos...
+
 					$pdf->SetLeftMargin(2);
 					$pdf->Ln(8);
 					
 					$pdf->SetFont('Arial','B',9);
 					$pdf->MultiCell(0,5,utf8_decode("Los precios estan expresados en moneda nacional de México (MXN)."),0,'C',false);
-					if(strlen($arrData['notas'])>0){
-						$notas=$arrData['notas'];
-						$reemplazar= array("<p>","</p>");
-						$nuevacad= array("","");
 
-						$notas=str_replace($reemplazar,$nuevacad,$arrData['notas']);
-
-						$pdf->Ln(8);
-						$pdf->MultiCell(0,5,utf8_decode("NOTA: \n".$notas),0,'C',false);
-					}
 					$pdf->Output();die();
 					//echo json_encode($pdf,JSON_UNESCAPED_UNICODE);
 
