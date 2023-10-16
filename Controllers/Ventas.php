@@ -495,6 +495,7 @@
 					//$pdf->AutoPrint();
 					
 					if(strlen($arrData['notas'])>0){
+						$pdf->SetLeftMargin(1);
 						$notas=$arrData['notas'];
 						$reemplazar= array("<p>","</p>");
 						$nuevacad= array("","");
