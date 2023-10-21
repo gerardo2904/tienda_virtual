@@ -13,6 +13,7 @@
                 <input type="hidden" id="idVenta" name="idVenta" value="">
                 <input type="hidden" id="txtImpuesto" name="txtImpuesto" value="0.0">
                 <input type="hidden" id="txtPimpuesto" name="txtPimpuesto" value="0.00" readonly>
+                <input type="hidden" id="xcl" name="xcl" value="0">
                 <p class="text-primary">Los campos con asterisco (<span class="required">*</span>) son obligatorios.</p>
                 <div class="row">
                     <div class="form-group col-md-4">

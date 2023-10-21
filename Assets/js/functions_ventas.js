@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 window.addEventListener('load', function(){
-
     //let num=0;
     /*const opcionCambiada = () => {
         num+=1;
@@ -113,7 +112,7 @@ window.addEventListener('load', function(){
   });
 
   
-       
+ 
     if(document.querySelector("#formVentas")){
         let formVentas = document.querySelector('#formVentas');
         formVentas.onsubmit = function(e){
@@ -359,7 +358,6 @@ window.addEventListener('load', function(){
 
         }
     }
-
     // Procesar si hay un cliente nuevo...
     if(document.querySelector("#formCliente")){
         let formCliente = document.querySelector('#formCliente');
@@ -402,7 +400,7 @@ window.addEventListener('load', function(){
                 if(request.readyState == 4 && request.status == 200){
                     let objData = JSON.parse(request.responseText);
                     if(objData.status){
-                        //console.log(request);
+                        
                        /* 
                         const $select = document.querySelector("#listCliente");
 
@@ -413,13 +411,11 @@ window.addEventListener('load', function(){
                         
                         //location.reload();
 
+                        document.querySelector('#xcl').value=objData.cl;
+
                         $('#modalAltaCliente').modal("hide");
                         formCliente.reset();
                         //swal("Clientes", objData.msg, "success");
-
-                        //Revisar cliente 
-                        //document.querySelector('#listCliente').value = 148;
-                        //$('#listCliente').selectpicker('render');
 
                     }else{
                         swal("Error", objData.msg, "error");
@@ -491,7 +487,7 @@ window.addEventListener('load', function(){
         }
     }
     // Fin de agregar abono...
-    
+       
         fntClientes2();
         fntProductosV();
         fntObtieneRegimen();
@@ -508,6 +504,7 @@ function fntClientes(){
         request.send();
         request.onreadystatechange = function(){
             if(request.readyState == 4 && request.status == 200){
+                //alert(document.querySelector('#listCliente').value);
                 //debugger;
                 //console.log(request);
                 document.querySelector('#listCliente').innerHTML = request.responseText;
@@ -519,7 +516,7 @@ function fntClientes(){
 }
 
 function fntClientes2(){
-    //console.log("cliente: "+document.formVentas.querySelector('#listCliente').value);
+    //alert(document.querySelector('#xcl').value);
     if(document.formVentas.querySelector('#listCliente')){
         let ajaxUrl = base_url+'Clientes/getSelectClientes';
         let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
@@ -529,9 +526,10 @@ function fntClientes2(){
             if(request.readyState == 4 && request.status == 200){
                 document.formVentas.querySelector('#listCliente').innerHTML = request.responseText;
                 $('#listCliente').selectpicker('refresh');
+                if(document.querySelector('#xcl').value>0){
+                    document.querySelector('#listCliente').value = document.querySelector('#xcl').value;
+                }
                 $('#listCliente').selectpicker('render');
-                
-                  
             }
         }
     }

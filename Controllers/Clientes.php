@@ -111,11 +111,10 @@
                         }
                         
                     }
-                    
-
+                    //dep($request_user);
                     if($request_user > 0){
                         if($option == 1){
-                            $arrResponse = array("status" => true, "msg" => 'Datos guardados correctamente.');
+                            $arrResponse = array("status" => true, "msg" => 'Datos guardados correctamente.',"cl" => $request_user);
                             $nombreUsuario = $strNombre.' '.$strApellido;
                             $dataUsuario = array('nombreUsuario' => $nombreUsuario,
                                                  'email' => $strEmail,
