@@ -365,8 +365,8 @@
 					//imagepng($im);
 					
 					# Encabezado y datos de la empresa #
+
 					$pdf->SetFont('Arial','B',10);
-					$pdf->SetTextColor(0,0,0);
 					$pdf->MultiCell(0,5,utf8_decode(strtoupper($arrData['nombreempresa'])),0,'C',false);
 					$pdf->SetFont('Arial','B',9);
 					$pdf->MultiCell(0,5,utf8_decode($arrData['rfcempresa']),0,'C',false);
@@ -383,8 +383,19 @@
 					$pdf->Ln(2);
 					$pdf->MultiCell(0,5,utf8_decode("Cliente: ".$arrData['nombre_cliente']." Tel:".$arrData['telcliente']),0,'C',false);
 					$pdf->Ln(1);
+
+					$fecha=new DateTime($arrData['created_at']);
+					$stringDate = $fecha->format('d/m/Y H:i:s');
+
+					$pdf->SetFont('Arial','BU',7);
+					$pdf->SetTextColor(0,0,0);
+					$pdf->MultiCell(0,5,utf8_decode("Fecha de venta: ".$stringDate),0,'C',false);
+					$pdf->Ln(2);
+					
+					$pdf->SetFont('Arial','B',8);
 					$pdf->MultiCell(0,5,utf8_decode("--------------------------------------------------"),0,'C',false);
 					$pdf->SetFont('Arial','B',6);
+
 					
 					//$pdf->SetLeftMargin(20);
 					$pdf->SetLeftMargin(0);
