@@ -133,16 +133,24 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <br>
-                                <button id="btnActionForm" class="btn btn-primary btn-lg btn-block" type="submit"">
-                                    <i class="fa fa-fw fa-lg fa-check-circle"></i><span id="btnText">Guardar</span>
+                                <button id="btnActionForm" class="btn btn-primary btn-sm btn-block" type="submit"">
+                                    <i class="fa fa-fw fa-md fa-check-circle"></i><span id="btnText">Guardar</span>
                                 </button>
                             </div>
-                            <div class="form-group col-md-6">
+
+                            <div class="form-group col-md-4">
                                 <br>
-                                <button class="btn btn-danger btn-lg btn-block" type="button"  data-dismiss="modal">
-                                    <i class="fa fa-fw fa-lg fa-times-circle"></i>Cerrar
+                                <button id="btnTicket" class="btn btn-success btn-sm btn-block" type="button" onclick="impTicket();"">
+                                    <i class="fa fa-fw fa-md fa-print"></i><span id="btnText">Ticket</span>
+                                </button>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <br>
+                                <button class="btn btn-danger btn-sm btn-block" type="button"  data-dismiss="modal">
+                                    <i class="fa fa-fw fa-md fa-times-circle"></i><span>Cerrar</span>
                                 </button>
                             </div>
                         </div>

@@ -202,6 +202,7 @@ window.addEventListener('load', function(){
                         swal("Ordenes de salida", objData.msg, "success");
                         
                         document.querySelector("#idVenta").value=objData.idventa;
+                        //fntImprimeRecibo(document.querySelector("#idVenta").value);
 
                         //document.querySelector("#idVenta").value;
                         //document.querySelector("#txtImpuesto").value;
@@ -215,7 +216,7 @@ window.addEventListener('load', function(){
                         document.querySelector('#titleModal').innerHTML = "Actualizar Orden de Salida";
                         document.querySelector('.modal-header').classList.replace("headerRegister","headerUpdate");
                         document.querySelector('#btnActionForm').classList.replace("btn-primary","btn-info");
-                        document.querySelector('#btnText').innerHTML= "Actualizar";
+                        document.querySelector('#btnText').innerHTML= "Actualiza";
                         
                         let SMONEY = "MXN "; //Simbolo de moneda.
                         let idventa = document.querySelector("#idVenta").value;
@@ -816,6 +817,8 @@ function obtener_tabla(ven, impp){
     }  
 }
 
+
+
 function fntEditInfo(element, venta){     
     // Esta variable rowTable, tome todo el valor de la fila de la tabla.  
     rowTable = element.parentNode.parentNode.parentNode;
@@ -824,7 +827,7 @@ function fntEditInfo(element, venta){
     document.querySelector('#titleModal').innerHTML = "Actualizar Orden de Salida";
     document.querySelector('.modal-header').classList.replace("headerRegister","headerUpdate");
     document.querySelector('#btnActionForm').classList.replace("btn-primary","btn-info");
-    document.querySelector('#btnText').innerHTML= "Actualizar";
+    document.querySelector('#btnText').innerHTML= "Actualiza";
     
     let SMONEY = "MXN "; //Simbolo de moneda.
     let idventa = venta;
@@ -1189,6 +1192,15 @@ function fntObtieneStock(){
     }
     }
     $('#listProductos').focus();
+}
+
+function impTicket(){
+   // btnTicket
+   if(document.querySelector("#txtTotal").value > 0){
+        fntImprimeRecibo(document.querySelector("#idVenta").value);
+   }else{
+        swal("Atención","Aun no tiene productos la orden de venta.","warning");
+   }
 }
 
 function fntImprimeRecibo(idventa){

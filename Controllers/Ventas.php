@@ -385,9 +385,9 @@
 					$pdf->Ln(1);
 
 					$fecha=new DateTime($arrData['created_at']);
-					$stringDate = $fecha->format('d/m/Y H:i:s');
+					$stringDate = $fecha->format('d/m/Y');
 
-					$pdf->SetFont('Arial','BU',7);
+					$pdf->SetFont('Arial','B',9);
 					$pdf->SetTextColor(0,0,0);
 					$pdf->MultiCell(0,5,utf8_decode("Fecha de venta: ".$stringDate),0,'C',false);
 					$pdf->Ln(2);
