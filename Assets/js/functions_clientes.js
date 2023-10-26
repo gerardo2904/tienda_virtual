@@ -99,6 +99,18 @@ document.addEventListener('DOMContentLoaded', function(){
                 if(request.readyState == 4 && request.status == 200){
                     let objData = JSON.parse(request.responseText);
                     if(objData.status){
+                        swal("Clientes", objData.msg, "success");
+                        //document.querySelector("#idUsuario").value = objData.cl;
+                        
+
+                        if(document.querySelector('#xcl').value==0){
+                            document.querySelector('#xcl').value=objData.cl;
+                        }
+
+                        document.querySelector('#idUsuario').value = document.querySelector('#xcl').value;
+
+
+                        //alert(document.querySelector("#idUsuario").value);
                         if(rowTable == ""){
                             // Si es un usuario nuevo, refresca la tabla y manda a la primera pagina
                             tableClientes.api().ajax.reload();    
@@ -112,9 +124,10 @@ document.addEventListener('DOMContentLoaded', function(){
                             rowTable.cells[3].textContent = intTelefono;
                             rowTable = "";
                         }
-                        $('#modalFormCliente').modal("hide");
-                        formCliente.reset();
-                        swal("Clientes", objData.msg, "success");
+                     //   $('#modalFormCliente').modal("hide");
+                     //   formCliente.reset();
+                     //   swal("Clientes", objData.msg, "success");
+                     //   document.querySelector("#idUsuario").value = objData.idpersona;
                         
                     }else{
                         swal("Error", objData.msg, "error");
@@ -134,7 +147,7 @@ window.addEventListener('load', function(){
     fntObtieneRegimen();
     fntObtieneCFDI();
     fntObtieneEstado();
-    fntObtieneCiudad();
+    fntObtieneCiudad();    
 },false);
 
 
@@ -277,7 +290,10 @@ function openModal(){
     document.querySelector('#titleModal').innerHTML = "Nuevo Cliente";
     document.querySelector('#formCliente').reset();
     $('#modalFormCliente').modal('show');
-    fntEmailAle();
+
+    if(document.querySelector('#idUsuario').value == 0){
+        fntEmailAle();
+    }
     document.querySelector("#txtNombre").focus();
 }
 

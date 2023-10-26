@@ -126,12 +126,12 @@
             $this->intlistCiudad = $intlistCiudad;
             $this->intlistRegimen = $intlistRegimen;
             $this->intlistCFDI = $intlistCFDI;
-
+            //dep($this->intIdUsuario);dep($this->strEmail );die();
             $sql = "SELECT * FROM persona 
                     WHERE (email_user = '{$this->strEmail}' AND idpersona != $this->intIdUsuario)
                        /*OR (identificacion = '{$this->strIdentificacion}' AND idpersona != $this->intIdUsuario) */ ";
             $request = $this->select_all($sql);  
-            
+            //dep($request);die();
             if(empty($request)){
                 if($this->strPassword != ""){
                     $sql = "UPDATE persona SET identificacion=?, nombres=?, apellidos=?, telefono=?, email_user=?, password=?, nit=?, nombrefiscal=?, direccionfiscal=?, numext=?, numint=?, colonia=?, cp=?, estado=?, municipio=?, regfiscal=?, usocfdi=? WHERE idpersona = $this->intIdUsuario";

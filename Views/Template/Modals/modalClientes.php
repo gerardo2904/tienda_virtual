@@ -13,6 +13,7 @@
               <form id="formCliente" name="formCliente" class="form-horizontal">
                 <input type="hidden" id="idUsuario" name="idUsuario" value="">
                 <input type="hidden" id="txtIdentificacion" name="txtIdentificacion" value="">
+                <input type="hidden" id="xcl" name="xcl" value="0">
                 <p class="text-primary">Los campos con asterisco (<span class="required">*</span>) son obligatorios.</p>
 
                 <div class="form-row">
