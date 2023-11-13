@@ -8,7 +8,7 @@
     <meta name="author" content="Gerardo Arreola">
     <meta name="theme-color" content="#009688">
     <?= media(); ?>/images/uploads/avatar2.png"
-    <link rel="shortcut icon" href="<?= media();?>/images/uploads/<?= $_SESSION['iEmp']; ?>"<fa-bar></fa-bar>
+    <link rel="shortcut icon" href="<?= media();?>/images/uploads/<?= $_SESSION['iEmp']; ?>"><fa-bar></fa-bar>
     <title><?= $data['page_tag']; ?></title>
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/main.css">
