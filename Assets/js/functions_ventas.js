@@ -9,21 +9,22 @@ $(document).on('focusin', function(e) {
 });
 
 
-
 document.addEventListener('DOMContentLoaded', function(){
 
     tableVentas = $('#tableVentas').dataTable( {
         "aProcessing:":true,
         "aServerSide":true,
         "language":{
+            "searchBuilder": {button:"Filtro avanzado",},
             "url": "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+            
         },
         "ajax": {
             "url": " "+base_url+"Ventas/getVentas",
             "dataSrc":""
         },
         "columns":[
-            
+            {"data":"fecha"},
             {"data":"nombre_cliente"},
             {"data":"comprobante"},
             {"data":"total"},
@@ -58,11 +59,20 @@ document.addEventListener('DOMContentLoaded', function(){
                 "text": "<i class='fas fas-file-copy'></i> CSV",
                 "titleAttr": "Exportar a CSV",
                 "className": "btn btn-info"
+            },
+            {"extend": "searchBuilder",
+            "className": "btn btn-warning"
             }
+            /*{
+                "searchBuilder":"",
+                "text": "<i class='fas'></i> Filtro avanzado",
+                "titleAttr": "Filtro avanzado",
+                "className": "btn btn-warning"
+            }*/
         ],
         "resonsieve":"true",
         "bDestroy":true,
-        "iDisplayLength":10,
+        "iDisplayLength":50,
         "order":[[0,"desc"]]
     });
 
@@ -124,6 +134,14 @@ window.addEventListener('load', function(){
             //let strDescuento = document.querySelector('#txtDescuento').value;
 
             let status = document.querySelector('#listStatus').value;
+
+            const date = new Date(fecha);
+            const str = date.toLocaleString("es-mx", {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+            });
+            fecha = str;
 
             switch (status) {
                 case "1":
@@ -187,13 +205,14 @@ window.addEventListener('load', function(){
                         }else{
                             let SMONEY = "MXN "; //Simbolo de moneda.
                             // Si es edicion, se mantiene en la pagina actual y solo modifica el renglon.
-                            rowTable.cells[0].textContent = intIdCliente;
-                            rowTable.cells[1].textContent = strComprobante;
-                            rowTable.cells[2].textContent = SMONEY+sub;
-                            //rowTable.cells[3].textContent = SMONEY+pimp;
-                            rowTable.cells[3].textContent = SMONEY+sDesc;
-                            rowTable.cells[4].textContent = SMONEY+gtotal;
-                            rowTable.cells[5].innerHTML = status;
+                            
+                            rowTable.cells[1].textContent = intIdCliente;
+                            rowTable.cells[2].textContent = strComprobante;
+                            rowTable.cells[3].textContent = SMONEY+sub;
+                            //rowTable.cells[4].textContent = SMONEY+pimp;
+                            rowTable.cells[4].textContent = SMONEY+sDesc;
+                            rowTable.cells[5].textContent = SMONEY+gtotal;
+                            rowTable.cells[6].innerHTML = status;
                             rowTable = "";
                             
                         }

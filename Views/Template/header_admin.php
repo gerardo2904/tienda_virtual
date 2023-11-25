@@ -14,6 +14,12 @@
     <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/main.css">
     <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/bootstrap-select.min.css">
     <link rel="stylesheet" type="text/css" href="<?= media(); ?>/js/datepicker/jquery-ui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/1.13.7_dataTables/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/1.6.0_searchBuilder/searchBuilder.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/1.5.1_dateTime/dataTables.dateTime.min.css">
+    <?php /*<link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/2.4.2_buttons/buttons.dataTables.min.css"> */ ?>
+
     <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/style.css">
     
     <!-- Font-icon css-->

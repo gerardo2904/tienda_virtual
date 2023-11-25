@@ -23,12 +23,24 @@
       <div class="row">
         <div class="col-md-12">
           <div class="tile">
-            <div class="tile-body">
+            <div class="tile-body"> 
+              <!--
+              <table border="0" cellspacing="5" cellpadding="5">
+              <tbody>
+                <tr>
+                  <td>Fecha inicial:</td>
+                  <td><input type="text" id="min" name="min"></td>
+                  <td>Fecha final:</td>
+                  <td><input type="text" id="max" name="max"></td>
+                </tr>
+                </tbody></table>
+                -->
               <div class="table-responsive">
                 <table class="table table-hover table-bordered" id="tableVentas">
                   <thead>
                     <tr>
                       <!-- <th>Id</th> -->
+                      <th>Fecha</th>
                       <th>Cliente</th>
                       <th>Comprobante</th>
                       <th>Subtotal</th>

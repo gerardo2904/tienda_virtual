@@ -44,7 +44,8 @@
 			sum(if(precio=0,0,if(cantidad=0,0,precio*cantidad))) as total,
 			sum(if(descuento=0,0,(precio*cantidad)*if(descuento>1,(descuento/100),descuento) )) as sdescuento,
 			sum(if(v.impuesto=0,0,(precio*cantidad)*v.impuesto)) as pimpuesto,
-			sum(if(precio=0,0,(precio*cantidad)+((precio*cantidad)*v.impuesto)-((precio*cantidad)*if(descuento>1,(descuento/100),descuento) )) ) as grantotal
+			sum(if(precio=0,0,(precio*cantidad)+((precio*cantidad)*v.impuesto)-((precio*cantidad)*if(descuento>1,(descuento/100),descuento) )) ) as grantotal,
+			v.created_at as fecha
 	 		from venta v
 			LEFT JOIN detalle_venta dv 
 			ON v.idventa = dv.idventa

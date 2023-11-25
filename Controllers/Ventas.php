@@ -43,7 +43,8 @@
                         $estado = 2;
 						$arrData[$i]['status'] = '<span class="badge badge-info">Finalizada</span>';
 					}
-
+					/*$fec= new DateTime($arrData[$i]['fecha']);
+					$arrData[$i]['fecha'] = $fec->format('d/m/Y'); */
 					$arrData[$i]['total'] = SMONEY.' '.formatMoney($arrData[$i]['total']);
                     $arrData[$i]['pimpuesto'] = SMONEY.' '.formatMoney($arrData[$i]['pimpuesto']);
                     $arrData[$i]['grantotal'] = SMONEY.' '.formatMoney($arrData[$i]['grantotal']);
@@ -333,7 +334,7 @@
 
 
 					
-					$pdf = new PDF_Code128('P','mm',array(58,190));
+					$pdf = new PDF_Code128('P','mm',array(58,290));
 					
 					//$pdf = new PDF_Code128('P','mm','Letter');
 					//$pdf = new PDF_JavaScript('P','mm',array(58,190));
