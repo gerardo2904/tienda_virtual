@@ -328,8 +328,8 @@
 
 					# Incluyendo librerias necesarias #
 					//require_once("Libraries/Core/pdf_js.php");
-					//require_once("Libraries/Core/code128.php");
-					require_once("Libraries/Core/fpdf.php");
+					require_once("Libraries/Core/code128.php");
+					//require_once("Libraries/Core/fpdf.php");
 
 					
 
