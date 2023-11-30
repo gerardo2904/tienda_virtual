@@ -334,7 +334,8 @@
 
 
 					
-					$pdf = new PDF_Code128('P','mm',array(58,3000));
+					//$pdf = new PDF_Code128('P','mm',array(58,3000));
+					$pdf = new PDF_Code128('P','mm',array(83,3000));
 					
 					//$pdf = new PDF_Code128('P','mm','Letter');
 					//$pdf = new PDF_JavaScript('P','mm',array(58,190));
