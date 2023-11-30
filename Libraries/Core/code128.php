@@ -54,7 +54,8 @@ protected $JStart = array("A"=>103, "B"=>104, "C"=>105); // Caract�res de s�
 protected $JSwap = array("A"=>101, "B"=>100, "C"=>99);   // Caract�res de changement de jeu
 
 //____________________________ Extension du constructeur _______________________
-function __construct($orientation='P', $unit='mm', $format='A4') {
+//function __construct($orientation='P', $unit='mm', $format='A4') {
+function __construct($orientation='P', $unit='mm', $format=array(58,490)) {
 
 	parent::__construct($orientation,$unit,$format);
 
