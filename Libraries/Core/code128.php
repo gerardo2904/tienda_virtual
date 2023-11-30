@@ -55,7 +55,7 @@ protected $JSwap = array("A"=>101, "B"=>100, "C"=>99);   // Caract�res de chan
 
 //____________________________ Extension du constructeur _______________________
 //function __construct($orientation='P', $unit='mm', $format='A4') {
-function __construct($orientation='P', $unit='mm', $format=array(58,490)) {
+function __construct($orientation='P', $unit='mm', $format=array(58,490)) { 
 
 	parent::__construct($orientation,$unit,$format);
 
