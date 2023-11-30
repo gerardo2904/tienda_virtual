@@ -328,7 +328,8 @@
 
 					# Incluyendo librerias necesarias #
 					//require_once("Libraries/Core/pdf_js.php");
-					require_once("Libraries/Core/code128.php");
+					//require_once("Libraries/Core/code128.php");
+					require_once("Libraries/Core/fpdf.php");
 
 					
 
@@ -338,7 +339,8 @@
 					//$pdf = new PDF_Code128('P','mm',array(83,3000));
 					
 					//$pdf = new PDF_Code128('P','mm','Letter');
-					$pdf = new PDF_JavaScript('P','mm',array(58,190));
+					$pdf = new PDF_JavaScript('P','mm',array(58,490));
+					//$pdf = new PDF('P','mm',array(58,190));
 					//dep($pdf);die();
 					$pdf->SetMargins(4,10,4);
 					$pdf->AddPage();
