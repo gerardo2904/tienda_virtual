@@ -80,7 +80,7 @@ tableProductos = $('#tableProductos').dataTable( {
             "titleAttr":"Exportar a Excel",
             "className": "btn btn-success",
             "exportOptions": { 
-                "columns": [ 0, 2, 5] 
+                "columns": [ 0, 2, 6] 
             }
         }
     ],

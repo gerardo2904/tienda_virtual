@@ -402,7 +402,7 @@
 					$pdf->SetLeftMargin(0);
 					$pdf->Ln(5);
 					$pdf->SetFont('Arial','B',11);
-					$pdf->Cell(32,3,"Producto",0,0,L);
+					$pdf->Cell(32,3,"Productos",0,0,L);
 					//$pdf->SetFont('Arial','B',9);
 					/*
 					$pdf->SetLeftMargin(17);
@@ -417,14 +417,14 @@
 					$pdf->SetLeftMargin(4);
 
 					for ($i=0; $i < count($arrProds); $i++) {
-						if($i>0){
+					/*	if($i>0){
 							$pdf->SetLeftMargin(0);
 							$pdf->Ln(5);
 							$pdf->SetFont('Arial','B',11);
 							$pdf->Cell(32,3,"Producto",0,0,L);
 							$pdf->Ln(3);
 							$pdf->SetLeftMargin(4);
-						}
+						} */
 						$pdf->SetLeftMargin(1);
 						$pdf->Ln(2);
 						$pdf->SetFont('Arial','',10);
